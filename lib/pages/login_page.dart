@@ -94,7 +94,7 @@ class _LoginForm extends StatelessWidget {
               validator: (value) {
                 String pattern =
                     r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-                RegExp regExp = new RegExp(pattern);
+                RegExp regExp = RegExp(pattern);
                 return regExp.hasMatch(value ?? '')
                     ? null
                     : 'El correo no es valido';
@@ -156,10 +156,22 @@ class _LoginForm extends StatelessWidget {
                   : () async {
                       FocusScope.of(context).unfocus();
                       if (!loginForm.isValidForm()) return;
-                      loginForm.isLoading = true;
-                      await Future.delayed(Duration(seconds: 2));
-                      loginForm.isLoading = false;
-                      Navigator.pushReplacementNamed(context, 'home');
+
+                      // Llama a loginUser para verificar las credenciales
+                      final errorMessage = await loginForm.loginUser(context);
+
+                      // Si hay un error, muestra el mensaje
+                      if (errorMessage != null) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(errorMessage),
+                            backgroundColor: Colors.red,
+                          ),
+                        );
+                      } else {
+                        // Si el login es exitoso, navega a la pantalla principal
+                        Navigator.pushReplacementNamed(context, 'home');
+                      }
                     },
             ),
           ],
