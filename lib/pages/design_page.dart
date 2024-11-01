@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:noi_design/pages/home_page.dart';
+import 'package:provider/provider.dart';
+import 'package:noi_design/services/design_service.dart';
+import 'package:noi_design/models/design.dart';
 
 class DesignPage extends StatefulWidget {
   @override
@@ -9,9 +10,11 @@ class DesignPage extends StatefulWidget {
 
 class _PrintPageState extends State<DesignPage> {
   final _formKey = GlobalKey<FormState>();
-  String selectedContact = '';
-  String description = '';
-  String? selectedUnity; //
+  bool _isLoading = false;
+
+  String? selectedContact = '';
+  String? description = '';
+  String? selectedUnity;
   String? planoFilePath;
   String? imageFilePath;
 
@@ -55,7 +58,6 @@ class _PrintPageState extends State<DesignPage> {
     );
   }
 
-  // Método para construir el título
   Widget _buildTitle() {
     return Text(
       'Solicitud de diseño',
@@ -67,7 +69,6 @@ class _PrintPageState extends State<DesignPage> {
     );
   }
 
-  // Método para construir el subtítulo
   Widget _buildSubtitle() {
     return Text(
       'Completa el siguiente formulario para solicitar tu diseño.',
@@ -79,7 +80,6 @@ class _PrintPageState extends State<DesignPage> {
     );
   }
 
-  // Método para construir el formulario
   Widget _buildForm() {
     return Card(
       elevation: 5,
@@ -141,7 +141,7 @@ class _PrintPageState extends State<DesignPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Sube imagenes de referencia',
+          'Sube imágenes de referencia',
           style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.bold,
@@ -151,52 +151,32 @@ class _PrintPageState extends State<DesignPage> {
         const SizedBox(height: 10),
         ElevatedButton(
           onPressed: () {
-            // Lógica de carga de archivos para imagen de referencia
+            // Lógica de carga de imágenes
           },
-          child: const Text('Seleccionar imagenes'),
+          child: const Text('Seleccionar imágenes'),
         ),
       ],
     );
   }
 
-  // Método para el Dropdown de unidad de medida
+  // Método para el campo de selección de unidad
   Widget _buildUnityDropdown() {
     return DropdownButtonFormField<String>(
       decoration: InputDecoration(
-        labelText: 'Unidad de medida',
+        labelText: 'Selecciona una unidad',
+        labelStyle: TextStyle(color: Color.fromRGBO(0, 56, 165, 1)),
         border: OutlineInputBorder(),
       ),
       items: [
-        DropdownMenuItem(
-          value: 'Centimetros',
-          child: Row(
-            children: [
-              Icon(FontAwesomeIcons.rulerCombined,
-                  color: Colors.grey, size: 18), // Cambié el icono
-              const SizedBox(width: 10),
-              Text('Centímetros'),
-            ],
-          ),
-        ),
-        DropdownMenuItem(
-          value: 'Pulgadas',
-          child: Row(
-            children: [
-              Icon(FontAwesomeIcons.rulerCombined,
-                  color: Colors.grey, size: 18), // Cambié el icono
-              const SizedBox(width: 10),
-              Text('Pulgadas'),
-            ],
-          ),
-        ),
+        DropdownMenuItem(value: 'Unidad 1', child: Text('Unidad 1')),
+        DropdownMenuItem(value: 'Unidad 2', child: Text('Unidad 2')),
       ],
       onChanged: (value) {
         setState(() {
-          selectedUnity = value; // Actualizar la variable seleccionada
+          selectedUnity = value;
         });
       },
-      validator: (value) =>
-          value == null ? 'Por favor, selecciona una unidad de medida' : null,
+      validator: (value) => value == null ? 'Selecciona una unidad' : null,
     );
   }
 
@@ -204,129 +184,116 @@ class _PrintPageState extends State<DesignPage> {
   Widget _buildDescriptionField() {
     return TextFormField(
       decoration: InputDecoration(
-        labelText: 'Descripción detallada del proyecto',
+        labelText: 'Descripción',
+        labelStyle: TextStyle(color: Color.fromRGBO(0, 56, 165, 1)),
         border: OutlineInputBorder(),
       ),
-      maxLines: 3,
-      onChanged: (value) {
-        description = value;
-      },
-      validator: (value) => (value == null || value.isEmpty)
-          ? 'Por favor, ingresa una descripción'
-          : null,
+      onChanged: (value) => description = value,
+      validator: (value) => value!.isEmpty ? 'Ingresa una descripción' : null,
     );
   }
 
-  // Método para el Dropdown de contacto
+  // Método para el campo de selección de contacto
   Widget _buildContactDropdown() {
     return DropdownButtonFormField<String>(
       decoration: InputDecoration(
-        labelText: 'Medio de contacto preferido',
+        labelText: 'Selecciona un contacto',
+        labelStyle: TextStyle(color: Color.fromRGBO(0, 56, 165, 1)),
         border: OutlineInputBorder(),
       ),
       items: [
-        DropdownMenuItem(
-          value: 'Correo electrónico',
-          child: Row(
-            children: [
-              Icon(FontAwesomeIcons.envelope, color: Colors.grey, size: 18),
-              const SizedBox(width: 10),
-              Text('Correo electrónico'),
-            ],
-          ),
-        ),
-        DropdownMenuItem(
-          value: 'WhatsApp',
-          child: Row(
-            children: [
-              Icon(FontAwesomeIcons.whatsapp, color: Colors.green, size: 18),
-              const SizedBox(width: 10),
-              Text('WhatsApp'),
-            ],
-          ),
-        ),
+        DropdownMenuItem(value: 'Contacto 1', child: Text('Contacto 1')),
+        DropdownMenuItem(value: 'Contacto 2', child: Text('Contacto 2')),
       ],
       onChanged: (value) {
         setState(() {
           selectedContact = value!;
         });
       },
-      validator: (value) =>
-          value == null ? 'Por favor, selecciona un medio de contacto' : null,
+      validator: (value) => value == null ? 'Selecciona un contacto' : null,
     );
   }
 
-  // Método para el mensaje informativo
+  // Método para el mensaje de información
   Widget _buildInfoMessage() {
     return Text(
-      'Una vez enviada la solicitud, será revisada por un asesor experto de Noi Design. '
-      'Dentro de 1 a 2 días hábiles nos pondremos en contacto con usted por medio de su preferencia '
-      'para confirmar la solicitud y resolver cualquier duda.',
+      'Asegúrate de llenar todos los campos correctamente.',
+      style: TextStyle(color: Colors.red),
       textAlign: TextAlign.center,
-      style: TextStyle(
-        color: Colors.black54,
-        fontStyle: FontStyle.italic,
-        fontSize: 10,
-      ),
     );
   }
 
   // Método para el botón de envío
   Widget _buildSubmitButton() {
-    return Align(
-      alignment: Alignment.center,
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Color.fromRGBO(0, 56, 165, 1),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
-        ),
-        onPressed: () {
-          // Validar el formulario
-          if (_formKey.currentState!.validate()) {
-            // Lógica de envío de formulario
-            _showConfirmationDialog(context);
-          }
-        },
-        child: const Text(
-          'Enviar solicitud',
+    return MaterialButton(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
+      color: Color.fromRGBO(0, 41, 123, 1),
+      disabledColor: Colors.grey,
+      elevation: 0,
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 80, vertical: 15),
+        child: Text(
+          _isLoading ? 'Cargando...' : 'Enviar Solicitud',
           style: TextStyle(color: Colors.white),
         ),
       ),
-    );
-  }
+      onPressed: _isLoading
+          ? null
+          : () async {
+              FocusScope.of(context).unfocus();
+              if (!_formKey.currentState!.validate()) {
+                return; // Mostrar errores de validación
+              }
+              setState(() {
+                _isLoading = true;
+              });
 
-  // Método para mostrar el diálogo de confirmación
-  void _showConfirmationDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('¡Diseño enviado!'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const SizedBox(height: 10),
-              const Text(
-                'Ahora tu idea está esperando ser revisada por nuestro equipo. Nos pondremos en contacto contigo pronto.',
-                textAlign: TextAlign.center,
-              ),
-            ],
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => HomePage()),
+              final newDesignRequest = DesignRequest(
+                selectedContact: selectedContact ?? '',
+                description: description ?? '',
+                selectedUnity:
+                    selectedUnity, // Este valor se asigna directamente desde el dropdown
+                planoFilePath:
+                    planoFilePath, // Asigna la ruta del plano si se cargó
+                imageFilePath:
+                    imageFilePath, // Asigna la ruta de la imagen si se cargó
+              );
+
+              try {
+                final userService =
+                    Provider.of<DesignService>(context, listen: false);
+                await userService.addDesign(newDesignRequest);
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: Text("Solicitud enviada correctamente"),
+                      content: Text("Tu solicitud ha sido enviada con éxito."),
+                      actions: [
+                        TextButton(
+                          child: Text("Aceptar"),
+                          onPressed: () {
+                            Navigator.of(context).pop(); // Cerrar diálogo
+                          },
+                        ),
+                      ],
+                    );
+                  },
                 );
-              },
-              child: const Text('Aceptar'),
-            ),
-          ],
-        );
-      },
+              } catch (e) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('Error al enviar solicitud: $e'),
+                  ),
+                );
+              } finally {
+                setState(() {
+                  _isLoading = false;
+                });
+              }
+            },
     );
   }
 }

@@ -1,47 +1,56 @@
 import 'dart:convert';
 
-class Design {
-  String id; // ID del objeto Design
-  String plano; // Ruta del archivo de plano
-  String imagenes; // Ruta de la imagen de referencia
-  String unidad; // Unidad de medida seleccionada
-  String description; // Descripción del proyecto
-  String selectedContact; // Medio de contacto preferido
+class DesignRequest {
+  String selectedContact;
+  String description;
+  String? selectedUnity;
+  String? planoFilePath;
+  String? imageFilePath;
+  String? id;
 
-  Design({
-    required this.id,
-    required this.plano,
-    required this.imagenes,
-    required this.unidad,
-    required this.description,
+  DesignRequest({
     required this.selectedContact,
+    required this.description,
+    this.selectedUnity,
+    this.planoFilePath,
+    this.imageFilePath,
+    this.id,
   });
-
-  // Convertir desde JSON
-  factory Design.fromJson(String str) => Design.fromMap(json.decode(str));
 
   // Convertir a JSON
   String toJson() => json.encode(toMap());
 
-  // Convertir desde Map
-  factory Design.fromMap(Map<String, dynamic> json) => Design(
-        id: json["id"], // Cargar el ID
-        plano: json["plano"], // Cargar la ruta del plano
-        imagenes: json["imagenes"], // Cargar la ruta de la imagen de referencia
-        unidad: json["unidad"], // Cargar la unidad de medida
-        description: json["description"], // Cargar la descripción
-        selectedContact: json["selectedContact"], // Cargar el medio de contacto
+  // Crear desde JSON
+  factory DesignRequest.fromJson(String str) =>
+      DesignRequest.fromMap(json.decode(str));
+
+  // Crear desde un mapa de datos
+  factory DesignRequest.fromMap(Map<String, dynamic> json) => DesignRequest(
+        selectedContact: json["selectedContact"],
+        description: json["description"],
+        selectedUnity: json["selectedUnity"],
+        planoFilePath: json["planoFilePath"],
+        imageFilePath: json["imageFilePath"],
+        id: json["id"], // Directamente asignamos el id sin comprobar si existe
       );
 
-  // Convertir a Map
+  // Convertir a un mapa de datos
   Map<String, dynamic> toMap() => {
-        "id": id, // Añadir el ID al mapa
-        "plano": plano, // Añadir la ruta del plano al mapa
-        "imagenes":
-            imagenes, // Añadir la ruta de la imagen de referencia al mapa
-        "unidad": unidad, // Añadir la unidad de medida al mapa
-        "description": description, // Añadir la descripción al mapa
-        "selectedContact":
-            selectedContact, // Añadir el medio de contacto al mapa
+        "selectedContact": selectedContact,
+        "description": description,
+        "selectedUnity": selectedUnity,
+        "planoFilePath": planoFilePath,
+        "imageFilePath": imageFilePath,
+        "id": id, // Agregamos el id al mapa
       };
+
+  // Método para crear una copia de `DesignRequest`
+  DesignRequest copy() => DesignRequest(
+        selectedContact: selectedContact,
+        description: description,
+        selectedUnity: selectedUnity,
+        planoFilePath: planoFilePath,
+        imageFilePath: imageFilePath,
+        id: id,
+      );
 }

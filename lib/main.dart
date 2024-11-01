@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:noi_design/pages/home_page.dart';
 import 'package:noi_design/pages/login_page.dart';
 import 'package:noi_design/pages/register_page.dart';
-import 'package:noi_design/services/print_design_service.dart';
+import 'package:noi_design/services/design_service.dart';
 import 'package:noi_design/services/user_service.dart';
 import 'package:provider/provider.dart';
 
@@ -14,7 +14,7 @@ class AppState extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (_) => PrintAndDesignService(),
+          create: (_) => DesignService(),
         ),
         ChangeNotifierProvider<UserService>(
           // Cambiado a ChangeNotifierProvider
