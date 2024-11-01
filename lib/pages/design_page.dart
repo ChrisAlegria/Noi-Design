@@ -250,7 +250,7 @@ class _PrintPageState extends State<DesignPage> {
                 _isLoading = true;
               });
 
-              final newDesignRequest = DesignRequest(
+              final newDesignRequest = Design(
                 selectedContact: selectedContact ?? '',
                 description: description ?? '',
                 selectedUnity:

@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-class DesignRequest {
+class Design {
   String selectedContact;
   String description;
   String? selectedUnity;
@@ -8,7 +8,7 @@ class DesignRequest {
   String? imageFilePath;
   String? id;
 
-  DesignRequest({
+  Design({
     required this.selectedContact,
     required this.description,
     this.selectedUnity,
@@ -21,11 +21,10 @@ class DesignRequest {
   String toJson() => json.encode(toMap());
 
   // Crear desde JSON
-  factory DesignRequest.fromJson(String str) =>
-      DesignRequest.fromMap(json.decode(str));
+  factory Design.fromJson(String str) => Design.fromMap(json.decode(str));
 
   // Crear desde un mapa de datos
-  factory DesignRequest.fromMap(Map<String, dynamic> json) => DesignRequest(
+  factory Design.fromMap(Map<String, dynamic> json) => Design(
         selectedContact: json["selectedContact"],
         description: json["description"],
         selectedUnity: json["selectedUnity"],
@@ -43,14 +42,4 @@ class DesignRequest {
         "imageFilePath": imageFilePath,
         "id": id, // Agregamos el id al mapa
       };
-
-  // Método para crear una copia de `DesignRequest`
-  DesignRequest copy() => DesignRequest(
-        selectedContact: selectedContact,
-        description: description,
-        selectedUnity: selectedUnity,
-        planoFilePath: planoFilePath,
-        imageFilePath: imageFilePath,
-        id: id,
-      );
 }
