@@ -168,8 +168,8 @@ class _PrintPageState extends State<DesignPage> {
         border: OutlineInputBorder(),
       ),
       items: [
-        DropdownMenuItem(value: 'Unidad 1', child: Text('Unidad 1')),
-        DropdownMenuItem(value: 'Unidad 2', child: Text('Unidad 2')),
+        DropdownMenuItem(value: 'Centimetros', child: Text('Centimetros')),
+        DropdownMenuItem(value: 'Pulgadas', child: Text('Pulgadas')),
       ],
       onChanged: (value) {
         setState(() {
@@ -202,8 +202,9 @@ class _PrintPageState extends State<DesignPage> {
         border: OutlineInputBorder(),
       ),
       items: [
-        DropdownMenuItem(value: 'Contacto 1', child: Text('Contacto 1')),
-        DropdownMenuItem(value: 'Contacto 2', child: Text('Contacto 2')),
+        DropdownMenuItem(
+            value: 'Correo Electronico', child: Text('Correo Electronico')),
+        DropdownMenuItem(value: 'WhatsApp', child: Text('WhatsApp')),
       ],
       onChanged: (value) {
         setState(() {
