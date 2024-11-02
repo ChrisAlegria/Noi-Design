@@ -125,11 +125,12 @@ class _PrintPageState extends State<DesignPage> {
           ),
         ),
         const SizedBox(height: 10),
-        ElevatedButton(
+        ElevatedButton.icon(
           onPressed: () {
             // Lógica de carga de archivos para plano
           },
-          child: const Text('Seleccionar archivo'),
+          icon: const Icon(Icons.upload_file), // Ícono de carga
+          label: const Text('Seleccionar archivo'),
         ),
       ],
     );
@@ -149,11 +150,12 @@ class _PrintPageState extends State<DesignPage> {
           ),
         ),
         const SizedBox(height: 10),
-        ElevatedButton(
+        ElevatedButton.icon(
           onPressed: () {
             // Lógica de carga de imágenes
           },
-          child: const Text('Seleccionar imágenes'),
+          icon: const Icon(Icons.image), // Ícono de imagen
+          label: const Text('Seleccionar imágenes'),
         ),
       ],
     );
