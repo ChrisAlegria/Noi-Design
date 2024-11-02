@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:noi_design/services/design_service.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:noi_design/models/design.dart';
 
 class DesignPage extends StatefulWidget {
@@ -161,24 +162,43 @@ class _PrintPageState extends State<DesignPage> {
     );
   }
 
-  // Método para el campo de selección de unidad
+// Método para el Dropdown de unidad de medida
   Widget _buildUnityDropdown() {
     return DropdownButtonFormField<String>(
       decoration: InputDecoration(
-        labelText: 'Selecciona una unidad',
-        labelStyle: TextStyle(color: Color.fromRGBO(0, 56, 165, 1)),
+        labelText: 'Unidad de medida',
         border: OutlineInputBorder(),
       ),
       items: [
-        DropdownMenuItem(value: 'Centimetros', child: Text('Centimetros')),
-        DropdownMenuItem(value: 'Pulgadas', child: Text('Pulgadas')),
+        DropdownMenuItem(
+          value: 'Centimetros',
+          child: Row(
+            children: [
+              Icon(FontAwesomeIcons.ruler, color: Colors.grey, size: 18),
+              const SizedBox(width: 10),
+              Text('Centímetros'),
+            ],
+          ),
+        ),
+        DropdownMenuItem(
+          value: 'Pulgadas',
+          child: Row(
+            children: [
+              Icon(FontAwesomeIcons.rulerCombined,
+                  color: Colors.grey, size: 18),
+              const SizedBox(width: 10),
+              Text('Pulgadas'),
+            ],
+          ),
+        ),
       ],
       onChanged: (value) {
         setState(() {
-          selectedUnity = value;
+          selectedUnity = value; // Actualizar la variable seleccionada
         });
       },
-      validator: (value) => value == null ? 'Selecciona una unidad' : null,
+      validator: (value) =>
+          value == null ? 'Por favor, selecciona una unidad de medida' : null,
     );
   }
 
@@ -195,25 +215,42 @@ class _PrintPageState extends State<DesignPage> {
     );
   }
 
-  // Método para el campo de selección de contacto
+  // Método para el Dropdown de contacto
   Widget _buildContactDropdown() {
     return DropdownButtonFormField<String>(
       decoration: InputDecoration(
-        labelText: 'Selecciona un contacto',
-        labelStyle: TextStyle(color: Color.fromRGBO(0, 56, 165, 1)),
+        labelText: 'Medio de contacto preferido',
         border: OutlineInputBorder(),
       ),
       items: [
         DropdownMenuItem(
-            value: 'Correo Electronico', child: Text('Correo Electronico')),
-        DropdownMenuItem(value: 'WhatsApp', child: Text('WhatsApp')),
+          value: 'Correo electrónico',
+          child: Row(
+            children: [
+              Icon(FontAwesomeIcons.envelope, color: Colors.grey, size: 18),
+              const SizedBox(width: 10),
+              Text('Correo electrónico'),
+            ],
+          ),
+        ),
+        DropdownMenuItem(
+          value: 'WhatsApp',
+          child: Row(
+            children: [
+              Icon(FontAwesomeIcons.whatsapp, color: Colors.green, size: 18),
+              const SizedBox(width: 10),
+              Text('WhatsApp'),
+            ],
+          ),
+        ),
       ],
       onChanged: (value) {
         setState(() {
-          selectedContact = value!;
+          selectedContact = value!; // Asegúrate de que el valor no sea nulo
         });
       },
-      validator: (value) => value == null ? 'Selecciona un contacto' : null,
+      validator: (value) =>
+          value == null ? 'Por favor, selecciona un medio de contacto' : null,
     );
   }
 
@@ -256,12 +293,9 @@ class _PrintPageState extends State<DesignPage> {
               final newDesignRequest = Design(
                 selectedContact: selectedContact ?? '',
                 description: description ?? '',
-                selectedUnity:
-                    selectedUnity, // Este valor se asigna directamente desde el dropdown
-                planoFilePath:
-                    planoFilePath, // Asigna la ruta del plano si se cargó
-                imageFilePath:
-                    imageFilePath, // Asigna la ruta de la imagen si se cargó
+                selectedUnity: selectedUnity,
+                planoFilePath: planoFilePath,
+                imageFilePath: imageFilePath,
               );
 
               try {
@@ -285,16 +319,37 @@ class _PrintPageState extends State<DesignPage> {
                     );
                   },
                 );
-              } catch (e) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text('Error al enviar solicitud: $e'),
-                  ),
-                );
-              } finally {
+                // Limpiar el formulario
+                setState(() {
+                  selectedContact = '';
+                  description = '';
+                  selectedUnity = null;
+                  planoFilePath = null;
+                  imageFilePath = null;
+                  _isLoading = false;
+                });
+              } catch (error) {
+                print('Error al enviar la solicitud: $error');
                 setState(() {
                   _isLoading = false;
                 });
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: Text("Error"),
+                      content: Text("Hubo un error al enviar la solicitud."),
+                      actions: [
+                        TextButton(
+                          child: Text("Aceptar"),
+                          onPressed: () {
+                            Navigator.of(context).pop(); // Cerrar diálogo
+                          },
+                        ),
+                      ],
+                    );
+                  },
+                );
               }
             },
     );
