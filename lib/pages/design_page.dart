@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:noi_design/services/design_service.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:noi_design/models/design.dart';
 
 class DesignPage extends StatefulWidget {
@@ -127,8 +128,21 @@ class _PrintPageState extends State<DesignPage> {
         ),
         const SizedBox(height: 10),
         ElevatedButton.icon(
-          onPressed: () {
+          onPressed: () async {
             // Lógica de carga de archivos para plano
+            FilePickerResult? result = await FilePicker.platform.pickFiles(
+              type: FileType.custom,
+              allowedExtensions: ['zip', 'rar'],
+            );
+
+            if (result != null) {
+              planoFilePath = result.files.single.path;
+              // Aquí puedes agregar lógica para subir el archivo a la base de datos
+              print('Archivo de plano seleccionado: $planoFilePath');
+            } else {
+              // El usuario canceló la selección
+              print('Selección de archivo cancelada');
+            }
           },
           icon: const Icon(Icons.upload_file), // Ícono de carga
           label: const Text('Seleccionar archivo'),
@@ -152,8 +166,22 @@ class _PrintPageState extends State<DesignPage> {
         ),
         const SizedBox(height: 10),
         ElevatedButton.icon(
-          onPressed: () {
+          onPressed: () async {
             // Lógica de carga de imágenes
+            FilePickerResult? result = await FilePicker.platform.pickFiles(
+              type: FileType.image,
+              allowMultiple: true, // Permite seleccionar múltiples imágenes
+            );
+
+            if (result != null) {
+              imageFilePath =
+                  result.files.map((file) => file.path).toList().toString();
+              // Aquí puedes agregar lógica para subir las imágenes a la base de datos
+              print('Imágenes seleccionadas: $imageFilePath');
+            } else {
+              // El usuario canceló la selección
+              print('Selección de imagen cancelada');
+            }
           },
           icon: const Icon(Icons.image), // Ícono de imagen
           label: const Text('Seleccionar imágenes'),
