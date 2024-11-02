@@ -16,9 +16,9 @@ class _PrintPageState extends State<DesignPage> {
 
   String? selectedContact = '';
   String? description = '';
-  String? selectedUnity;
-  String? planoFilePath;
-  String? imageFilePath;
+  String? unidad;
+  String? plano;
+  String? imagenes;
 
   @override
   Widget build(BuildContext context) {
@@ -136,9 +136,9 @@ class _PrintPageState extends State<DesignPage> {
             );
 
             if (result != null) {
-              planoFilePath = result.files.single.path;
+              plano = result.files.single.path;
               // Aquí puedes agregar lógica para subir el archivo a la base de datos
-              print('Archivo de plano seleccionado: $planoFilePath');
+              print('Archivo de plano seleccionado: $plano');
             } else {
               // El usuario canceló la selección
               print('Selección de archivo cancelada');
@@ -174,10 +174,10 @@ class _PrintPageState extends State<DesignPage> {
             );
 
             if (result != null) {
-              imageFilePath =
+              imagenes =
                   result.files.map((file) => file.path).toList().toString();
               // Aquí puedes agregar lógica para subir las imágenes a la base de datos
-              print('Imágenes seleccionadas: $imageFilePath');
+              print('Imágenes seleccionadas: $imagenes');
             } else {
               // El usuario canceló la selección
               print('Selección de imagen cancelada');
@@ -222,7 +222,7 @@ class _PrintPageState extends State<DesignPage> {
       ],
       onChanged: (value) {
         setState(() {
-          selectedUnity = value; // Actualizar la variable seleccionada
+          unidad = value; // Actualizar la variable seleccionada
         });
       },
       validator: (value) =>
@@ -321,9 +321,9 @@ class _PrintPageState extends State<DesignPage> {
               final newDesignRequest = Design(
                 selectedContact: selectedContact ?? '',
                 description: description ?? '',
-                selectedUnity: selectedUnity,
-                planoFilePath: planoFilePath,
-                imageFilePath: imageFilePath,
+                unidad: unidad,
+                plano: plano,
+                imagenes: imagenes,
               );
 
               try {
@@ -351,9 +351,9 @@ class _PrintPageState extends State<DesignPage> {
                 setState(() {
                   selectedContact = '';
                   description = '';
-                  selectedUnity = null;
-                  planoFilePath = null;
-                  imageFilePath = null;
+                  unidad = null;
+                  plano = null;
+                  imagenes = null;
                   _isLoading = false;
                 });
               } catch (error) {

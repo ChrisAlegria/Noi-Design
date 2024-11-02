@@ -3,17 +3,17 @@ import 'dart:convert';
 class Design {
   String selectedContact;
   String description;
-  String? selectedUnity;
-  String? planoFilePath;
-  String? imageFilePath;
+  String? unidad;
+  String? plano;
+  String? imagenes;
   String? id;
 
   Design({
     required this.selectedContact,
     required this.description,
-    this.selectedUnity,
-    this.planoFilePath,
-    this.imageFilePath,
+    this.unidad,
+    this.plano,
+    this.imagenes,
     this.id,
   });
 
@@ -27,9 +27,9 @@ class Design {
   factory Design.fromMap(Map<String, dynamic> json) => Design(
         selectedContact: json["selectedContact"],
         description: json["description"],
-        selectedUnity: json["selectedUnity"],
-        planoFilePath: json["planoFilePath"],
-        imageFilePath: json["imageFilePath"],
+        unidad: json["selectedUnity"],
+        plano: json["planoFilePath"],
+        imagenes: json["imageFilePath"],
         id: json["id"], // Directamente asignamos el id sin comprobar si existe
       );
 
@@ -37,9 +37,9 @@ class Design {
   Map<String, dynamic> toMap() => {
         "selectedContact": selectedContact,
         "description": description,
-        "selectedUnity": selectedUnity,
-        "planoFilePath": planoFilePath,
-        "imageFilePath": imageFilePath,
+        "selectedUnity": unidad,
+        "planoFilePath": plano,
+        "imageFilePath": imagenes,
         "id": id, // Agregamos el id al mapa
       };
 }
