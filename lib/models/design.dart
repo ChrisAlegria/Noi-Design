@@ -6,11 +6,14 @@ class Design {
   String? unidad;
   String? plano;
   String? imagenes;
-  String? id;
+  String?
+      id; // Asegúrate de que este valor sea opcional si no siempre se proporciona
+  String userEmail;
 
   Design({
     required this.selectedContact,
     required this.description,
+    required this.userEmail,
     this.unidad,
     this.plano,
     this.imagenes,
@@ -30,7 +33,8 @@ class Design {
         unidad: json["selectedUnity"],
         plano: json["planoFilePath"],
         imagenes: json["imageFilePath"],
-        id: json["id"], // Directamente asignamos el id sin comprobar si existe
+        id: json["id"], // Asignamos el id (si existe)
+        userEmail: json["userEmail"], // Asegúrate de incluir el userEmail aquí
       );
 
   // Convertir a un mapa de datos
@@ -40,6 +44,7 @@ class Design {
         "selectedUnity": unidad,
         "planoFilePath": plano,
         "imageFilePath": imagenes,
-        "id": id, // Agregamos el id al mapa
+        "id": id, // Asegúrate de agregar el id al mapa
+        "userEmail": userEmail, // Agrega el userEmail al mapa
       };
 }

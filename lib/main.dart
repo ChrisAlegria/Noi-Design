@@ -5,6 +5,7 @@ import 'package:noi_design/pages/register_page.dart';
 import 'package:noi_design/services/design_service.dart';
 import 'package:noi_design/services/user_service.dart';
 import 'package:provider/provider.dart';
+import 'package:noi_design/widgets/global_user.dart'; // Asegúrate de importar tu nuevo archivo
 
 void main() => runApp(AppState());
 
@@ -19,6 +20,9 @@ class AppState extends StatelessWidget {
         ChangeNotifierProvider<UserService>(
           // Cambiado a ChangeNotifierProvider
           create: (_) => UserService(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => GlobalUser(),
         ),
       ],
       child: MyApp(),

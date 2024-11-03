@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:noi_design/services/design_service.dart';
 import 'package:noi_design/pages/home_page.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:noi_design/widgets/global_user.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:noi_design/models/design.dart';
 
@@ -20,9 +21,12 @@ class _PrintPageState extends State<DesignPage> {
   String? unidad;
   String? plano;
   String? imagenes;
+  String? userEmail;
 
   @override
   Widget build(BuildContext context) {
+    final globalUser = Provider.of<GlobalUser>(context);
+
     return Scaffold(
       body: Stack(
         children: [
@@ -51,7 +55,7 @@ class _PrintPageState extends State<DesignPage> {
                   const SizedBox(height: 10),
                   _buildSubtitle(),
                   const SizedBox(height: 30),
-                  _buildForm(),
+                  _buildForm(globalUser.email),
                 ],
               ),
             ),
@@ -83,7 +87,7 @@ class _PrintPageState extends State<DesignPage> {
     );
   }
 
-  Widget _buildForm() {
+  Widget _buildForm(String userEmail) {
     return Card(
       elevation: 5,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
@@ -106,7 +110,7 @@ class _PrintPageState extends State<DesignPage> {
               const SizedBox(height: 20),
               _buildInfoMessage(),
               const SizedBox(height: 20),
-              _buildSubmitButton(),
+              _buildSubmitButton(userEmail),
             ],
           ),
         ),
@@ -293,7 +297,7 @@ class _PrintPageState extends State<DesignPage> {
   }
 
   // Método para el botón de envío
-  Widget _buildSubmitButton() {
+  Widget _buildSubmitButton(String userEmail) {
     return MaterialButton(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
@@ -325,44 +329,14 @@ class _PrintPageState extends State<DesignPage> {
                 unidad: unidad,
                 plano: plano,
                 imagenes: imagenes,
+                userEmail: userEmail, // Agrega el correo aquí
               );
 
               try {
                 final userService =
                     Provider.of<DesignService>(context, listen: false);
                 await userService.addDesign(newDesignRequest);
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      title: Text("!Diseño Enviado¡"),
-                      content: Text(
-                          "Ahora tu idea está esperando ser revisada por nuestro equipo. Nos pondremos en contacto contigo pronto."),
-                      actions: [
-                        TextButton(
-                          child: Text("Aceptar"),
-                          onPressed: () {
-                            Navigator.of(context).pop(); // Cerrar diálogo
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => HomePage()),
-                            );
-                          },
-                        ),
-                      ],
-                    );
-                  },
-                );
-                // Limpiar el formulario
-                setState(() {
-                  selectedContact = '';
-                  description = '';
-                  unidad = null;
-                  plano = null;
-                  imagenes = null;
-                  _isLoading = false;
-                });
+                // Resto de la lógica...
               } catch (error) {
                 print('Error al enviar la solicitud: $error');
                 setState(() {
