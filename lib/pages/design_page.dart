@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:noi_design/services/design_service.dart';
+import 'package:noi_design/pages/home_page.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:noi_design/models/design.dart';
@@ -285,7 +286,7 @@ class _PrintPageState extends State<DesignPage> {
   // Método para el mensaje de información
   Widget _buildInfoMessage() {
     return Text(
-      'Asegúrate de llenar todos los campos correctamente.',
+      'Asegúrate de llenar y seleccionar todos los campos.',
       style: TextStyle(color: Colors.red),
       textAlign: TextAlign.center,
     );
@@ -334,13 +335,19 @@ class _PrintPageState extends State<DesignPage> {
                   context: context,
                   builder: (BuildContext context) {
                     return AlertDialog(
-                      title: Text("Solicitud enviada correctamente"),
-                      content: Text("Tu solicitud ha sido enviada con éxito."),
+                      title: Text("!Diseño Enviado¡"),
+                      content: Text(
+                          "Ahora tu idea está esperando ser revisada por nuestro equipo. Nos pondremos en contacto contigo pronto."),
                       actions: [
                         TextButton(
                           child: Text("Aceptar"),
                           onPressed: () {
                             Navigator.of(context).pop(); // Cerrar diálogo
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => HomePage()),
+                            );
                           },
                         ),
                       ],
