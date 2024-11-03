@@ -336,7 +336,38 @@ class _PrintPageState extends State<DesignPage> {
                 final userService =
                     Provider.of<DesignService>(context, listen: false);
                 await userService.addDesign(newDesignRequest);
-                // Resto de la lógica...
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: Text("!Diseño Enviado¡"),
+                      content: Text(
+                          "Ahora tu idea está esperando ser revisada por nuestro equipo. Nos pondremos en contacto contigo pronto."),
+                      actions: [
+                        TextButton(
+                          child: Text("Aceptar"),
+                          onPressed: () {
+                            Navigator.of(context).pop(); // Cerrar diálogo
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => HomePage()),
+                            );
+                          },
+                        ),
+                      ],
+                    );
+                  },
+                );
+                // Limpiar el formulario
+                setState(() {
+                  selectedContact = '';
+                  description = '';
+                  unidad = null;
+                  plano = null;
+                  imagenes = null;
+                  _isLoading = false;
+                });
               } catch (error) {
                 print('Error al enviar la solicitud: $error');
                 setState(() {
