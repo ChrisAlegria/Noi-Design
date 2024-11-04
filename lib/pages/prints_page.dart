@@ -370,9 +370,9 @@ class _PrintPageState extends State<PrintPage> {
                   context: context,
                   builder: (BuildContext context) {
                     return AlertDialog(
-                      title: Text("Imprecion Enviada"),
+                      title: Text("Impresión Enviada"),
                       content: Text(
-                          "Ahora tu idea está esperando ser revisada por nuestro equipo. Nos pondremos en contacto contigo pronto."),
+                          "Ahora tu modelo está esperando ser revisada por nuestro equipo. Nos pondremos en contacto contigo pronto."),
                       actions: [
                         TextButton(
                           child: Text("Aceptar"),
