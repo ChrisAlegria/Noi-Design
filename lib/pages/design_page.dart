@@ -340,7 +340,7 @@ class _PrintPageState extends State<DesignPage> {
                   context: context,
                   builder: (BuildContext context) {
                     return AlertDialog(
-                      title: Text("!Diseño Enviado¡"),
+                      title: Text("Diseño Enviado"),
                       content: Text(
                           "Ahora tu idea está esperando ser revisada por nuestro equipo. Nos pondremos en contacto contigo pronto."),
                       actions: [
