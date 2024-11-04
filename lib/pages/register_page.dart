@@ -28,6 +28,21 @@ class RegisterPage extends StatelessWidget {
                   ],
                 ),
               ),
+              SizedBox(height: 30),
+              TextButton(
+                onPressed: () {
+                  Navigator.pushNamed(context,
+                      'login'); // Navega a la página de inicio de sesión
+                },
+                child: Text(
+                  '¿Ya tienes una cuenta? Inicia sesión',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black, // Ajusta el color según prefieras
+                  ),
+                ),
+              ),
               SizedBox(height: 50),
             ],
           ),

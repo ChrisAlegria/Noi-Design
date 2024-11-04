@@ -30,17 +30,18 @@ class LoginPage extends StatelessWidget {
                   ],
                 ),
               ),
-              SizedBox(height: 50),
-              GestureDetector(
-                onTap: () {
-                  Navigator.pushNamed(context, 'register');
+              SizedBox(height: 30),
+              TextButton(
+                onPressed: () {
+                  Navigator.pushNamed(context,
+                      'register'); // Navega a la página de inicio de sesión
                 },
                 child: Text(
-                  'Crear Cuenta Nueva',
+                  '¿Aun no tienes una cuenta? Crea una',
                   style: TextStyle(
-                    fontSize: 18,
+                    fontSize: 16,
                     fontWeight: FontWeight.bold,
-                    color: Colors.black, // Ajusta el color según prefieras
+                    color: Colors.black,
                   ),
                 ),
               ),
