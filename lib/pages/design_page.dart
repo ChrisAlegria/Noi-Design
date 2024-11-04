@@ -9,16 +9,16 @@ import 'package:noi_design/models/design.dart';
 
 class DesignPage extends StatefulWidget {
   @override
-  _PrintPageState createState() => _PrintPageState();
+  _DesignPageState createState() => _DesignPageState();
 }
 
-class _PrintPageState extends State<DesignPage> {
+class _DesignPageState extends State<DesignPage> {
   final _formKey = GlobalKey<FormState>();
   bool _isLoading = false;
 
   String? selectedContact = '';
   String? description = '';
-  String? unidad;
+  String? unidad = '';
   String? plano;
   String? imagenes;
   String? userEmail;
@@ -76,6 +76,7 @@ class _PrintPageState extends State<DesignPage> {
     );
   }
 
+  // Método para construir el subtítulo
   Widget _buildSubtitle() {
     return Text(
       'Completa el siguiente formulario para solicitar tu diseño.',
@@ -87,6 +88,7 @@ class _PrintPageState extends State<DesignPage> {
     );
   }
 
+  // Método para construir el formulario
   Widget _buildForm(String userEmail) {
     return Card(
       elevation: 5,
@@ -287,12 +289,18 @@ class _PrintPageState extends State<DesignPage> {
     );
   }
 
-  // Método para el mensaje de información
+  // Método para el mensaje informativo
   Widget _buildInfoMessage() {
     return Text(
-      'Asegúrate de llenar y seleccionar todos los campos.',
-      style: TextStyle(color: Colors.red),
+      'Una vez enviada la solicitud, será revisada por un asesor experto de Noi Design. '
+      'Dentro de 1 a 2 días hábiles nos pondremos en contacto con usted por medio de su preferencia '
+      'para confirmar la solicitud y resolver cualquier duda.',
       textAlign: TextAlign.center,
+      style: TextStyle(
+        color: Colors.black54,
+        fontStyle: FontStyle.italic,
+        fontSize: 10,
+      ),
     );
   }
 
@@ -326,7 +334,7 @@ class _PrintPageState extends State<DesignPage> {
               final newDesignRequest = Design(
                 selectedContact: selectedContact ?? '',
                 description: description ?? '',
-                unidad: unidad,
+                unidad: unidad ?? '',
                 plano: plano,
                 imagenes: imagenes,
                 userEmail: userEmail, // Agrega el correo aquí

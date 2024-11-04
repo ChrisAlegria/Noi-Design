@@ -1,45 +1,49 @@
 import 'dart:convert';
 
 class Print {
-  String id; // ID del objeto Print
-  String modelo; // Modelo de impresión
-  String material; // Material de impresión
+  String selectedContact; // Medio de contacto (antes "medioContacto")
+  String description; // Descripción de la impresión
   String escala; // Escala de impresión
-  String descripcion; // Descripción
-  String medioContacto; // Medio de contacto
+  String material; // Material de impresión
+  String? modelo; // Modelo de impresión
+  String? id; // ID del objeto Print (opcional)
+  String userEmail; // Email del usuario que inició sesión
 
   Print({
-    required this.id,
-    required this.modelo,
+    required this.selectedContact,
+    required this.description,
+    required this.userEmail,
     required this.material,
     required this.escala,
-    required this.descripcion,
-    required this.medioContacto,
+    this.modelo,
+    this.id,
   });
-
-  // Convertir desde JSON
-  factory Print.fromJson(String str) => Print.fromMap(json.decode(str));
 
   // Convertir a JSON
   String toJson() => json.encode(toMap());
 
-  // Convertir desde Map
+  // Crear desde JSON
+  factory Print.fromJson(String str) => Print.fromMap(json.decode(str));
+
+  // Crear desde un mapa de datos
   factory Print.fromMap(Map<String, dynamic> json) => Print(
-        id: json["id"], // Cargar el ID
-        modelo: json["modelo"], // Cargar el modelo
-        material: json["material"], // Cargar el material
-        escala: json["escala"], // Cargar la escala
-        descripcion: json["descripcion"], // Cargar la descripción
-        medioContacto: json["medioContacto"], // Cargar el medio de contacto
+        selectedContact: json["selectedContact"],
+        description: json["description"],
+        modelo: json["selectedModel"],
+        material: json["selectedMaterial"],
+        escala: json["selectedScale"],
+        id: json["id"], // Asignamos el id (si existe)
+        userEmail: json["userEmail"], // Asegúrate de incluir el userEmail aquí
       );
 
-  // Convertir a Map
+  // Convertir a un mapa de datos
   Map<String, dynamic> toMap() => {
-        "id": id, // Añadir el ID al mapa
-        "modelo": modelo, // Añadir el modelo al mapa
-        "material": material, // Añadir el material al mapa
-        "escala": escala, // Añadir la escala al mapa
-        "descripcion": descripcion, // Añadir la descripción al mapa
-        "medioContacto": medioContacto, // Añadir el medio de contacto al mapa
+        "selectedContact": selectedContact,
+        "description": description,
+        "selectedModel": modelo,
+        "selectedMaterial": material,
+        "selectedScale": escala,
+        "id": id, // Agrega el id al mapa (si existe)
+        "userEmail": userEmail, // Agrega el userEmail al mapa
       };
 }

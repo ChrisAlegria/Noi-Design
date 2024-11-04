@@ -4,6 +4,7 @@ import 'package:noi_design/pages/login_page.dart';
 import 'package:noi_design/pages/register_page.dart';
 import 'package:noi_design/services/design_service.dart';
 import 'package:noi_design/services/user_service.dart';
+import 'package:noi_design/services/print_service.dart';
 import 'package:provider/provider.dart';
 import 'package:noi_design/widgets/global_user.dart'; // Asegúrate de importar tu nuevo archivo
 
@@ -16,6 +17,9 @@ class AppState extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(
           create: (_) => DesignService(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => PrintService(),
         ),
         ChangeNotifierProvider<UserService>(
           // Cambiado a ChangeNotifierProvider

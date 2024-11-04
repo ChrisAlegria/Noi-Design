@@ -3,7 +3,7 @@ import 'dart:convert';
 class Design {
   String selectedContact;
   String description;
-  String? unidad;
+  String unidad;
   String? plano;
   String? imagenes;
   String?
@@ -14,7 +14,7 @@ class Design {
     required this.selectedContact,
     required this.description,
     required this.userEmail,
-    this.unidad,
+    required this.unidad,
     this.plano,
     this.imagenes,
     this.id,

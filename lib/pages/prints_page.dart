@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
+import 'package:noi_design/services/print_service.dart';
 import 'package:noi_design/pages/home_page.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:noi_design/widgets/global_user.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:noi_design/models/print.dart';
 
 class PrintPage extends StatefulWidget {
   @override
@@ -9,13 +14,20 @@ class PrintPage extends StatefulWidget {
 
 class _PrintPageState extends State<PrintPage> {
   final _formKey = GlobalKey<FormState>();
-  String? selectedMaterial;
-  String? selectedScale;
-  String? selectedContact;
-  String description = '';
+  bool _isLoading = false;
+
+  String? selectedContact = ''; // Medio de contacto (antes "medioContacto")
+  String? description = ''; // Descripción de la impresión
+  String? escala = ''; // Escala de impresión
+  String? material = ''; // Material de impresión
+  String? modelo; // Modelo de impresión
+  String? id; // ID del objeto Print (opcional)
+  String? userEmail; // Email del usuario que inició sesión
 
   @override
   Widget build(BuildContext context) {
+    final globalUser = Provider.of<GlobalUser>(context);
+
     return Scaffold(
       body: Stack(
         children: [
@@ -44,7 +56,7 @@ class _PrintPageState extends State<PrintPage> {
                   const SizedBox(height: 10),
                   _buildSubtitle(),
                   const SizedBox(height: 30),
-                  _buildForm(),
+                  _buildForm(globalUser.email),
                 ],
               ),
             ),
@@ -79,7 +91,7 @@ class _PrintPageState extends State<PrintPage> {
   }
 
   // Método para construir el formulario
-  Widget _buildForm() {
+  Widget _buildForm(String userEmail) {
     return Card(
       elevation: 5,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
@@ -102,7 +114,7 @@ class _PrintPageState extends State<PrintPage> {
               const SizedBox(height: 20),
               _buildInfoMessage(),
               const SizedBox(height: 20),
-              _buildSubmitButton(),
+              _buildSubmitButton(userEmail),
             ],
           ),
         ),
@@ -124,11 +136,25 @@ class _PrintPageState extends State<PrintPage> {
           ),
         ),
         const SizedBox(height: 10),
-        ElevatedButton(
-          onPressed: () {
-            // Lógica de carga de archivos
+        ElevatedButton.icon(
+          onPressed: () async {
+            // Lógica de carga de archivos para plano
+            FilePickerResult? result = await FilePicker.platform.pickFiles(
+              type: FileType.custom,
+              allowedExtensions: ['stl', 'sldprt'],
+            );
+
+            if (result != null) {
+              modelo = result.files.single.path;
+              //Lógica para subir el archivo a la base de datos
+              print('Archivo de modelo seleccionado: $modelo');
+            } else {
+              // El usuario canceló la selección
+              print('Selección de archivo cancelada');
+            }
           },
-          child: const Text('Seleccionar archivo'),
+          icon: const Icon(Icons.upload_file), // Ícono de carga
+          label: const Text('Seleccionar archivo'),
         ),
       ],
     );
@@ -141,31 +167,36 @@ class _PrintPageState extends State<PrintPage> {
         labelText: 'Material de impresión',
         border: OutlineInputBorder(),
       ),
-      items: ['Filamento', 'Resina'].map((material) {
-        return DropdownMenuItem(
-          value: material,
+      items: [
+        DropdownMenuItem(
+          value: 'Filamento',
           child: Row(
             children: [
-              Icon(
-                material == 'Filamento'
-                    ? FontAwesomeIcons.cube
-                    : FontAwesomeIcons.water,
-                color: Colors.grey,
-                size: 18,
-              ),
+              Icon(FontAwesomeIcons.cube, color: Colors.grey, size: 18),
               const SizedBox(width: 10),
-              Text(material),
+              Text('Filamento'),
             ],
           ),
-        );
-      }).toList(),
+        ),
+        DropdownMenuItem(
+          value: 'Resina',
+          child: Row(
+            children: [
+              Icon(FontAwesomeIcons.water, color: Colors.grey, size: 18),
+              const SizedBox(width: 10),
+              Text('Resina'),
+            ],
+          ),
+        ),
+      ],
       onChanged: (value) {
         setState(() {
-          selectedMaterial = value;
+          material = value; // Actualizar la variable seleccionada
         });
       },
-      validator: (value) =>
-          value == null ? 'Por favor, selecciona un material' : null,
+      validator: (value) => value == null
+          ? 'Por favor, selecciona un material de impresion'
+          : null,
     );
   }
 
@@ -176,38 +207,51 @@ class _PrintPageState extends State<PrintPage> {
         labelText: 'Escala de impresión',
         border: OutlineInputBorder(),
       ),
-      items: ['100%', '75%', '50%', '25%'].map((scale) {
-        double iconSize;
-        switch (scale) {
-          case '100%':
-            iconSize = 18.0;
-            break;
-          case '75%':
-            iconSize = 16.0;
-            break;
-          case '50%':
-            iconSize = 14.0;
-            break;
-          case '25%':
-            iconSize = 12.0;
-            break;
-          default:
-            iconSize = 18.0;
-        }
-        return DropdownMenuItem(
-          value: scale,
+      items: [
+        DropdownMenuItem(
+          value: '100%',
           child: Row(
             children: [
-              Icon(FontAwesomeIcons.expand, color: Colors.grey, size: iconSize),
+              Icon(FontAwesomeIcons.expand, color: Colors.grey, size: 18),
               const SizedBox(width: 10),
-              Text(scale),
+              Text('100%'),
             ],
           ),
-        );
-      }).toList(),
+        ),
+        DropdownMenuItem(
+          value: '75%',
+          child: Row(
+            children: [
+              Icon(FontAwesomeIcons.expand, color: Colors.grey, size: 18),
+              const SizedBox(width: 10),
+              Text('75%'),
+            ],
+          ),
+        ),
+        DropdownMenuItem(
+          value: '50%',
+          child: Row(
+            children: [
+              Icon(FontAwesomeIcons.expand, color: Colors.grey, size: 18),
+              const SizedBox(width: 10),
+              Text('50%'),
+            ],
+          ),
+        ),
+        DropdownMenuItem(
+          value: '25%',
+          child: Row(
+            children: [
+              Icon(FontAwesomeIcons.expand, color: Colors.grey, size: 18),
+              const SizedBox(width: 10),
+              Text('25%'),
+            ],
+          ),
+        ),
+      ],
       onChanged: (value) {
         setState(() {
-          selectedScale = value;
+          escala = value;
         });
       },
       validator: (value) =>
@@ -219,16 +263,12 @@ class _PrintPageState extends State<PrintPage> {
   Widget _buildDescriptionField() {
     return TextFormField(
       decoration: InputDecoration(
-        labelText: 'Descripción detallada de la impresión',
+        labelText: 'Descripción',
+        labelStyle: TextStyle(color: Color.fromRGBO(0, 56, 165, 1)),
         border: OutlineInputBorder(),
       ),
-      maxLines: 3,
-      onChanged: (value) {
-        description = value;
-      },
-      validator: (value) => (value == null || value.isEmpty)
-          ? 'Por favor, ingresa una descripción'
-          : null,
+      onChanged: (value) => description = value,
+      validator: (value) => value!.isEmpty ? 'Ingresa una descripción' : null,
     );
   }
 
@@ -263,7 +303,7 @@ class _PrintPageState extends State<PrintPage> {
       ],
       onChanged: (value) {
         setState(() {
-          selectedContact = value;
+          selectedContact = value!; // Asegúrate de que el valor no sea nulo
         });
       },
       validator: (value) =>
@@ -287,62 +327,101 @@ class _PrintPageState extends State<PrintPage> {
   }
 
   // Método para el botón de envío
-  Widget _buildSubmitButton() {
-    return Align(
-      alignment: Alignment.center,
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Color.fromRGBO(0, 56, 165, 1),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
-        ),
-        onPressed: () {
-          // Validar el formulario
-          if (_formKey.currentState!.validate()) {
-            // Lógica de envío de formulario
-            _showConfirmationDialog(context);
-          }
-        },
-        child: const Text(
-          'Enviar solicitud',
+  Widget _buildSubmitButton(String userEmail) {
+    return MaterialButton(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
+      color: Color.fromRGBO(0, 41, 123, 1),
+      disabledColor: Colors.grey,
+      elevation: 0,
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 80, vertical: 15),
+        child: Text(
+          _isLoading ? 'Cargando...' : 'Enviar Solicitud',
           style: TextStyle(color: Colors.white),
         ),
       ),
-    );
-  }
+      onPressed: _isLoading
+          ? null
+          : () async {
+              FocusScope.of(context).unfocus();
+              if (!_formKey.currentState!.validate()) {
+                return; // Mostrar errores de validación
+              }
+              setState(() {
+                _isLoading = true;
+              });
 
-  // Método para mostrar el diálogo de confirmación
-  void _showConfirmationDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('¡Diseño enviado!'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const SizedBox(height: 10),
-              const Text(
-                'Ahora tu idea está esperando ser revisada por nuestro equipo. Nos pondremos en contacto contigo pronto.',
-                textAlign: TextAlign.center,
-              ),
-            ],
-          ),
-          actions: [
-            TextButton(
-              child: const Text('Aceptar'),
-              onPressed: () {
-                Navigator.pop(context);
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => HomePage()),
+              final newPrintRequest = Print(
+                selectedContact: selectedContact ?? '',
+                description: description ?? '',
+                escala: escala ?? '',
+                material: material ?? '',
+                modelo: modelo,
+                userEmail: userEmail, // Agrega el correo aquí
+              );
+
+              try {
+                final userService =
+                    Provider.of<PrintService>(context, listen: false);
+                await userService.addPrint(newPrintRequest);
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: Text("Imprecion Enviada"),
+                      content: Text(
+                          "Ahora tu idea está esperando ser revisada por nuestro equipo. Nos pondremos en contacto contigo pronto."),
+                      actions: [
+                        TextButton(
+                          child: Text("Aceptar"),
+                          onPressed: () {
+                            Navigator.of(context).pop(); // Cerrar diálogo
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => HomePage()),
+                            );
+                          },
+                        ),
+                      ],
+                    );
+                  },
                 );
-              },
-            ),
-          ],
-        );
-      },
+                // Limpiar el formulario
+                setState(() {
+                  selectedContact = '';
+                  description = '';
+                  escala = null;
+                  material = null;
+                  modelo = null;
+                  _isLoading = false;
+                });
+              } catch (error) {
+                print('Error al enviar la solicitud: $error');
+                setState(() {
+                  _isLoading = false;
+                });
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: Text("Error"),
+                      content: Text("Hubo un error al enviar la solicitud."),
+                      actions: [
+                        TextButton(
+                          child: Text("Aceptar"),
+                          onPressed: () {
+                            Navigator.of(context).pop(); // Cerrar diálogo
+                          },
+                        ),
+                      ],
+                    );
+                  },
+                );
+              }
+            },
     );
   }
 }
