@@ -1,12 +1,47 @@
 import 'package:flutter/material.dart';
+import 'package:noi_design/pages/orders_page.dart';
 import 'package:noi_design/widgets/card_container.dart';
 import 'package:noi_design/pages/prints_page.dart';
 import 'package:noi_design/pages/design_page.dart';
+import 'package:noi_design/widgets/auth_service.dart';
 
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Color.fromARGB(
+            255, 255, 255, 255), // Cambia este color por el que desees
+        elevation: 0, // Si deseas que el AppBar no tenga sombra
+        actions: [
+          PopupMenuButton<String>(
+            icon: Icon(
+              Icons.person,
+              color: Color.fromRGBO(0, 41, 123, 1),
+            ), // Ícono de usuario con el color que prefieras
+            onSelected: (String value) {
+              if (value == 'Mis pedidos') {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => OrdersPage(),
+                  ),
+                );
+              } else if (value == 'Logout') {
+                logout(context);
+              }
+            },
+            itemBuilder: (BuildContext context) {
+              return {'Mis pedidos', 'Logout'}.map((String choice) {
+                return PopupMenuItem<String>(
+                  value: choice,
+                  child: Text(choice),
+                );
+              }).toList();
+            },
+          ),
+        ],
+      ),
       body: Stack(
         children: [
           // Fondo de degradado

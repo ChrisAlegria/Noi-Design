@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'login',
+      title: 'Noi Design',
       debugShowCheckedModeBanner: false,
       initialRoute: 'login',
       routes: {

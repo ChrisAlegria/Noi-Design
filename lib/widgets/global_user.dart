@@ -9,4 +9,10 @@ class GlobalUser extends ChangeNotifier {
     _email = email;
     notifyListeners();
   }
+
+  //función para limpiar los datos del usuario
+  void clearUser() {
+    _email = '';
+    notifyListeners();
+  }
 }
