@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:noi_design/pages/orders_page.dart';
 import 'package:provider/provider.dart';
 import 'package:noi_design/services/print_service.dart';
 import 'package:noi_design/pages/home_page.dart';
@@ -6,6 +7,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:noi_design/widgets/global_user.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:noi_design/models/print.dart';
+import 'package:noi_design/widgets/auth_service.dart';
 
 class PrintPage extends StatefulWidget {
   @override
@@ -29,6 +31,45 @@ class _PrintPageState extends State<PrintPage> {
     final globalUser = Provider.of<GlobalUser>(context);
 
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Color.fromARGB(255, 255, 255, 255),
+        elevation: 0, // Si deseas que el AppBar no tenga sombra
+        leading: Padding(
+          padding:
+              const EdgeInsets.all(8.0), // Padding opcional alrededor del logo
+          child: CircleAvatar(
+            backgroundImage: AssetImage('assets/images/Logo.jpg'),
+          ),
+        ),
+        actions: [
+          PopupMenuButton<String>(
+            icon: Icon(
+              Icons.person,
+              color: Color.fromRGBO(0, 41, 123, 1),
+            ),
+            onSelected: (String value) {
+              if (value == 'Mis pedidos') {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => OrdersPage(),
+                  ),
+                );
+              } else if (value == 'Logout') {
+                logout(context);
+              }
+            },
+            itemBuilder: (BuildContext context) {
+              return {'Mis pedidos', 'Logout'}.map((String choice) {
+                return PopupMenuItem<String>(
+                  value: choice,
+                  child: Text(choice),
+                );
+              }).toList();
+            },
+          ),
+        ],
+      ),
       body: Stack(
         children: [
           // Fondo de degradado

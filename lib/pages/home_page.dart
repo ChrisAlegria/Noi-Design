@@ -10,15 +10,21 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color.fromARGB(
-            255, 255, 255, 255), // Cambia este color por el que desees
+        backgroundColor: Color.fromARGB(255, 255, 255, 255),
         elevation: 0, // Si deseas que el AppBar no tenga sombra
+        leading: Padding(
+          padding:
+              const EdgeInsets.all(8.0), // Padding opcional alrededor del logo
+          child: CircleAvatar(
+            backgroundImage: AssetImage('assets/images/Logo.jpg'),
+          ),
+        ),
         actions: [
           PopupMenuButton<String>(
             icon: Icon(
               Icons.person,
               color: Color.fromRGBO(0, 41, 123, 1),
-            ), // Ícono de usuario con el color que prefieras
+            ),
             onSelected: (String value) {
               if (value == 'Mis pedidos') {
                 Navigator.push(
