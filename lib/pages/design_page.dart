@@ -18,6 +18,7 @@ class _DesignPageState extends State<DesignPage> {
   final _formKey = GlobalKey<FormState>();
   bool _isLoading = false;
 
+  String? titulo = '';
   String? selectedContact = '';
   String? description = '';
   String? unidad = '';
@@ -145,6 +146,8 @@ class _DesignPageState extends State<DesignPage> {
               const SizedBox(height: 20),
               _buildImageUploadField(),
               const SizedBox(height: 20),
+              _buildReference(),
+              const SizedBox(height: 20),
               _buildUnityDropdown(),
               const SizedBox(height: 20),
               _buildDescriptionField(),
@@ -238,6 +241,20 @@ class _DesignPageState extends State<DesignPage> {
     );
   }
 
+  // Método para el campo de titulo
+  Widget _buildReference() {
+    return TextFormField(
+      decoration: InputDecoration(
+        labelText: 'Nombre del proyecto',
+        labelStyle: TextStyle(color: Color.fromRGBO(0, 56, 165, 1)),
+        border: OutlineInputBorder(),
+      ),
+      onChanged: (value) => titulo = value,
+      validator: (value) =>
+          value!.isEmpty ? 'Por favor, ingresa un nombre de proyecto' : null,
+    );
+  }
+
 // Método para el Dropdown de unidad de medida
   Widget _buildUnityDropdown() {
     return DropdownButtonFormField<String>(
@@ -287,7 +304,8 @@ class _DesignPageState extends State<DesignPage> {
         border: OutlineInputBorder(),
       ),
       onChanged: (value) => description = value,
-      validator: (value) => value!.isEmpty ? 'Ingresa una descripción' : null,
+      validator: (value) =>
+          value!.isEmpty ? 'Por favor, ingresa una descripción' : null,
     );
   }
 
@@ -373,6 +391,7 @@ class _DesignPageState extends State<DesignPage> {
               });
 
               final newDesignRequest = Design(
+                titulo: titulo ?? '',
                 selectedContact: selectedContact ?? '',
                 description: description ?? '',
                 unidad: unidad ?? '',
@@ -410,6 +429,7 @@ class _DesignPageState extends State<DesignPage> {
                 );
                 // Limpiar el formulario
                 setState(() {
+                  titulo = '';
                   selectedContact = '';
                   description = '';
                   unidad = null;

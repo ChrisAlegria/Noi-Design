@@ -18,6 +18,7 @@ class _PrintPageState extends State<PrintPage> {
   final _formKey = GlobalKey<FormState>();
   bool _isLoading = false;
 
+  String? titulo = '';
   String? selectedContact = ''; // Medio de contacto (antes "medioContacto")
   String? description = ''; // Descripción de la impresión
   String? escala = ''; // Escala de impresión
@@ -145,6 +146,8 @@ class _PrintPageState extends State<PrintPage> {
             children: [
               _buildFileUploadField(),
               const SizedBox(height: 20),
+              _buildReference(),
+              const SizedBox(height: 20),
               _buildMaterialDropdown(),
               const SizedBox(height: 20),
               _buildScaleDropdown(),
@@ -198,6 +201,20 @@ class _PrintPageState extends State<PrintPage> {
           label: const Text('Seleccionar archivo'),
         ),
       ],
+    );
+  }
+
+  // Método para el campo de titulo
+  Widget _buildReference() {
+    return TextFormField(
+      decoration: InputDecoration(
+        labelText: 'Nombre del proyecto',
+        labelStyle: TextStyle(color: Color.fromRGBO(0, 56, 165, 1)),
+        border: OutlineInputBorder(),
+      ),
+      onChanged: (value) => titulo = value,
+      validator: (value) =>
+          value!.isEmpty ? 'Por favor, ingresa un nombre de proyecto' : null,
     );
   }
 
@@ -395,6 +412,7 @@ class _PrintPageState extends State<PrintPage> {
               });
 
               final newPrintRequest = Print(
+                titulo: titulo ?? '',
                 selectedContact: selectedContact ?? '',
                 description: description ?? '',
                 escala: escala ?? '',
@@ -432,6 +450,7 @@ class _PrintPageState extends State<PrintPage> {
                 );
                 // Limpiar el formulario
                 setState(() {
+                  titulo = '';
                   selectedContact = '';
                   description = '';
                   escala = null;

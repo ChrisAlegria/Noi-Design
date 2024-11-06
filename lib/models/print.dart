@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 class Print {
+  String titulo;
   String selectedContact; // Medio de contacto (antes "medioContacto")
   String description; // Descripción de la impresión
   String escala; // Escala de impresión
@@ -10,6 +11,7 @@ class Print {
   String userEmail; // Email del usuario que inició sesión
 
   Print({
+    required this.titulo,
     required this.selectedContact,
     required this.description,
     required this.userEmail,
@@ -27,6 +29,7 @@ class Print {
 
   // Crear desde un mapa de datos
   factory Print.fromMap(Map<String, dynamic> json) => Print(
+        titulo: json["title"],
         selectedContact: json["selectedContact"],
         description: json["description"],
         modelo: json["selectedModel"],
@@ -38,6 +41,7 @@ class Print {
 
   // Convertir a un mapa de datos
   Map<String, dynamic> toMap() => {
+        "title": titulo,
         "selectedContact": selectedContact,
         "description": description,
         "selectedModel": modelo,

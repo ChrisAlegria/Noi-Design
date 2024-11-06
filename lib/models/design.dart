@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 class Design {
+  String titulo;
   String selectedContact;
   String description;
   String unidad;
@@ -11,6 +12,7 @@ class Design {
   String userEmail;
 
   Design({
+    required this.titulo,
     required this.selectedContact,
     required this.description,
     required this.userEmail,
@@ -28,6 +30,7 @@ class Design {
 
   // Crear desde un mapa de datos
   factory Design.fromMap(Map<String, dynamic> json) => Design(
+        titulo: json["title"],
         selectedContact: json["selectedContact"],
         description: json["description"],
         unidad: json["selectedUnity"],
@@ -39,6 +42,7 @@ class Design {
 
   // Convertir a un mapa de datos
   Map<String, dynamic> toMap() => {
+        "title": titulo,
         "selectedContact": selectedContact,
         "description": description,
         "selectedUnity": unidad,
