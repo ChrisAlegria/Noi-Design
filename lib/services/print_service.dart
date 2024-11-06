@@ -60,4 +60,17 @@ class PrintService extends ChangeNotifier {
       throw Exception('Error al agregar solicitud de impresión');
     }
   }
+
+  // Función para eliminar una solicitud de impresión
+  Future<void> deletePrint(String id) async {
+    final url = Uri.https(_baseURL, 'print/$id.json');
+    final response = await http.delete(url);
+
+    if (response.statusCode == 200) {
+      prints.removeWhere((print) => print.id == id);
+      notifyListeners(); // Notifica a los oyentes del cambio
+    } else {
+      throw Exception('Error al eliminar el pedido de impresión');
+    }
+  }
 }

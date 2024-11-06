@@ -60,4 +60,17 @@ class DesignService extends ChangeNotifier {
       throw Exception('Error al agregar solicitud de diseño');
     }
   }
+
+  // Función para eliminar una solicitud de diseño
+  Future<void> deleteDesign(String id) async {
+    final url = Uri.https(_baseURL, 'design/$id.json');
+    final response = await http.delete(url);
+
+    if (response.statusCode == 200) {
+      design.removeWhere((design) => design.id == id);
+      notifyListeners(); // Notifica a los oyentes del cambio
+    } else {
+      throw Exception('Error al eliminar el pedido de diseño');
+    }
+  }
 }
