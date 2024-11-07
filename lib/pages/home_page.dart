@@ -94,7 +94,7 @@ class HomePage extends StatelessWidget {
                             ?.copyWith(color: Colors.white70),
                         textAlign: TextAlign.center,
                       ),
-                      SizedBox(height: 30),
+                      SizedBox(height: 10),
                     ],
                   ),
                 ),
