@@ -21,29 +21,27 @@ class OrdersPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color.fromARGB(255, 255, 255, 255),
+        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
         elevation: 0, // Si deseas que el AppBar no tenga sombra
-        leading: Padding(
-          padding:
-              const EdgeInsets.all(8.0), // Padding opcional alrededor del logo
+        leading: const Padding(
+          padding: EdgeInsets.all(8.0), // Padding opcional alrededor del logo
           child: CircleAvatar(
             backgroundImage: AssetImage('assets/images/Logo.jpg'),
           ),
         ),
         actions: [
           PopupMenuButton<String>(
-            icon: Icon(
+            icon: const Icon(
               Icons.person,
               color: Color.fromRGBO(0, 41, 123, 1),
             ),
             onSelected: (String value) {
-              if (value == 'Mis pedidos') {
-              } else if (value == 'Logout') {
+              if (value == 'Logout') {
                 logout(context);
               }
             },
             itemBuilder: (BuildContext context) {
-              return {'Mis pedidos', 'Logout'}.map((String choice) {
+              return const {'Mis pedidos', 'Logout'}.map((String choice) {
                 return PopupMenuItem<String>(
                   value: choice,
                   child: Text(choice),
@@ -53,28 +51,46 @@ class OrdersPage extends StatelessWidget {
           ),
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Pedidos de Impresión',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+      body: Stack(
+        children: [
+          // Fondo de degradado
+          Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Color.fromRGBO(0, 41, 123, 1),
+                  Color.fromRGBO(99, 152, 254, 1),
+                ],
               ),
-              // Lista de pedidos de impresión
-              printService.prints.isEmpty
-                  ? Center(child: Text("No hay pedidos de impresión"))
-                  : ListView.builder(
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Pedidos de Impresión',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                  // Lista de pedidos de impresión
+                  if (printService.prints.isEmpty)
+                    const Center(child: Text("No hay pedidos de impresión"))
+                  else
+                    ListView.builder(
                       shrinkWrap: true,
                       physics:
-                          NeverScrollableScrollPhysics(), // Evita que se desplace
-                      itemCount: printService.prints.length,
+                          const NeverScrollableScrollPhysics(), // Evita que se desplace
+                      itemCount: printService.prints
+                          .where((p) => p.userEmail == userEmail)
+                          .length,
                       itemBuilder: (context, index) {
-                        final Print printOrder = printService.prints[index];
-                        if (printOrder.userEmail != userEmail)
-                          return Container(); // Filtra por usuario
+                        final Print printOrder = printService.prints
+                            .where((p) => p.userEmail == userEmail)
+                            .toList()[index];
                         return Card(
                           margin: const EdgeInsets.symmetric(vertical: 8),
                           child: ListTile(
@@ -90,37 +106,49 @@ class OrdersPage extends StatelessWidget {
                               ],
                             ),
                             trailing: IconButton(
-                              icon: Icon(Icons.delete, color: Colors.red),
+                              icon: const Icon(Icons.delete, color: Colors.red),
                               onPressed: () async {
-                                await printService.deletePrint(printOrder.id!);
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                      content: Text(
-                                          "Pedido de impresión eliminado")),
-                                );
+                                try {
+                                  await printService
+                                      .deletePrint(printOrder.id!);
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                        content: Text(
+                                            "Pedido de impresión eliminado")),
+                                  );
+                                } catch (e) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                        content: Text(
+                                            "Error al eliminar el pedido")),
+                                  );
+                                }
                               },
                             ),
                           ),
                         );
                       },
                     ),
-              SizedBox(height: 20),
-              Text(
-                'Pedidos de Diseño',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
-              // Lista de pedidos de diseño
-              designService.design.isEmpty
-                  ? Center(child: Text("No hay pedidos de diseño"))
-                  : ListView.builder(
+                  const SizedBox(height: 20),
+                  const Text(
+                    'Pedidos de Diseño',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                  // Lista de pedidos de diseño
+                  if (designService.design.isEmpty)
+                    const Center(child: Text("No hay pedidos de diseño"))
+                  else
+                    ListView.builder(
                       shrinkWrap: true,
                       physics:
-                          NeverScrollableScrollPhysics(), // Evita que se desplace
-                      itemCount: designService.design.length,
+                          const NeverScrollableScrollPhysics(), // Evita que se desplace
+                      itemCount: designService.design
+                          .where((d) => d.userEmail == userEmail)
+                          .length,
                       itemBuilder: (context, index) {
-                        final Design designOrder = designService.design[index];
-                        if (designOrder.userEmail != userEmail)
-                          return Container(); // Filtra por usuario
+                        final Design designOrder = designService.design
+                            .where((d) => d.userEmail == userEmail)
+                            .toList()[index];
                         return Card(
                           margin: const EdgeInsets.symmetric(vertical: 8),
                           child: ListTile(
@@ -134,24 +162,34 @@ class OrdersPage extends StatelessWidget {
                               ],
                             ),
                             trailing: IconButton(
-                              icon: Icon(Icons.delete, color: Colors.red),
+                              icon: const Icon(Icons.delete, color: Colors.red),
                               onPressed: () async {
-                                await designService
-                                    .deleteDesign(designOrder.id!);
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                      content:
-                                          Text("Pedido de diseño eliminado")),
-                                );
+                                try {
+                                  await designService
+                                      .deleteDesign(designOrder.id!);
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                        content:
+                                            Text("Pedido de diseño eliminado")),
+                                  );
+                                } catch (e) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                        content: Text(
+                                            "Error al eliminar el pedido")),
+                                  );
+                                }
                               },
                             ),
                           ),
                         );
                       },
                     ),
-            ],
+                ],
+              ),
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
