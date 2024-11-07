@@ -4,6 +4,7 @@ import 'package:noi_design/widgets/card_container.dart';
 import 'package:noi_design/pages/prints_page.dart';
 import 'package:noi_design/pages/design_page.dart';
 import 'package:noi_design/widgets/auth_service.dart';
+import 'package:noi_design/widgets/card_home.dart';
 
 class HomePage extends StatelessWidget {
   @override
@@ -100,7 +101,7 @@ class HomePage extends StatelessWidget {
                 ),
 
                 // Tarjetas
-                CardContainer(
+                CardHome(
                   child: Column(
                     children: [
                       _ServiceCard(
