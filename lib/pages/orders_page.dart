@@ -72,18 +72,28 @@ class OrdersPage extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
+                  Text(
                     'Pedidos de Impresión',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
                   ),
-                  // Lista de pedidos de impresión
+                  const SizedBox(height: 10),
                   if (printService.prints.isEmpty)
-                    const Center(child: Text("No hay pedidos de impresión"))
+                    const Center(
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(vertical: 20.0),
+                        child: Text(
+                          "No hay pedidos de impresión",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                    )
                   else
                     ListView.builder(
                       shrinkWrap: true,
-                      physics:
-                          const NeverScrollableScrollPhysics(), // Evita que se desplace
+                      physics: const NeverScrollableScrollPhysics(),
                       itemCount: printService.prints
                           .where((p) => p.userEmail == userEmail)
                           .length,
@@ -94,7 +104,11 @@ class OrdersPage extends StatelessWidget {
                         return Card(
                           margin: const EdgeInsets.symmetric(vertical: 8),
                           child: ListTile(
-                            title: Text(printOrder.titulo),
+                            title: Text(
+                              printOrder.titulo,
+                              style: TextStyle(
+                                  color: Color.fromRGBO(0, 56, 165, 1)),
+                            ),
                             subtitle: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -130,18 +144,28 @@ class OrdersPage extends StatelessWidget {
                       },
                     ),
                   const SizedBox(height: 20),
-                  const Text(
+                  Text(
                     'Pedidos de Diseño',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
                   ),
-                  // Lista de pedidos de diseño
+                  const SizedBox(height: 10),
                   if (designService.design.isEmpty)
-                    const Center(child: Text("No hay pedidos de diseño"))
+                    const Center(
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(vertical: 20.0),
+                        child: Text(
+                          "No hay pedidos de diseño",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                    )
                   else
                     ListView.builder(
                       shrinkWrap: true,
-                      physics:
-                          const NeverScrollableScrollPhysics(), // Evita que se desplace
+                      physics: const NeverScrollableScrollPhysics(),
                       itemCount: designService.design
                           .where((d) => d.userEmail == userEmail)
                           .length,
@@ -152,7 +176,11 @@ class OrdersPage extends StatelessWidget {
                         return Card(
                           margin: const EdgeInsets.symmetric(vertical: 8),
                           child: ListTile(
-                            title: Text(designOrder.titulo),
+                            title: Text(
+                              designOrder.titulo,
+                              style: TextStyle(
+                                  color: Color.fromRGBO(0, 56, 165, 1)),
+                            ),
                             subtitle: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
