@@ -23,10 +23,18 @@ class OrdersPage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 255, 255, 255),
         elevation: 0, // Si deseas que el AppBar no tenga sombra
-        leading: const Padding(
-          padding: EdgeInsets.all(8.0), // Padding opcional alrededor del logo
-          child: CircleAvatar(
-            backgroundImage: AssetImage('assets/images/Logo.jpg'),
+        leading: Padding(
+          padding:
+              const EdgeInsets.all(8.0), // Padding opcional alrededor del logo
+          child: GestureDetector(
+            onTap: () {
+              // Navegar a la pantalla de inicio
+              Navigator.pushNamed(context,
+                  'home'); // Ajusta '/home' según la ruta de tu pantalla de inicio
+            },
+            child: const CircleAvatar(
+              backgroundImage: AssetImage('assets/images/Logo.jpg'),
+            ),
           ),
         ),
         actions: [
@@ -70,7 +78,8 @@ class OrdersPage extends StatelessWidget {
             padding: const EdgeInsets.all(16.0),
             child: SingleChildScrollView(
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment
+                    .center, // Esto centrará los textos dentro de la columna
                 children: [
                   Text(
                     'Pedidos de Impresión',
