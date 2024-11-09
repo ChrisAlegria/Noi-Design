@@ -112,10 +112,8 @@ class AdminPage extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text("Material: ${printOrder.material}"),
-                                Text(
-                                    "Escala de Impresión: ${printOrder.escala}"),
-                                Text(
-                                    "Contacto Preferido: ${printOrder.selectedContact}"),
+                                Text("Escala: ${printOrder.escala}"),
+                                Text("Contacto: ${printOrder.selectedContact}"),
                               ],
                             ),
                             trailing: ElevatedButton.icon(
@@ -148,6 +146,10 @@ class AdminPage extends StatelessWidget {
                                   try {
                                     await printService
                                         .finalizePrint(printOrder.id!);
+
+                                    // Eliminar el pedido de la lista temporalmente
+                                    printService.prints.removeAt(index);
+
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(
                                           content: Text("Pedido finalizado")),
@@ -161,10 +163,11 @@ class AdminPage extends StatelessWidget {
                                   }
                                 }
                               },
-                              icon: const Icon(Icons.check),
                               label: const Text('Finalizar Pedido'),
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.green,
+                                backgroundColor:
+                                    const Color.fromRGBO(0, 41, 123, 1), // Azul
+                                foregroundColor: Colors.white, // Texto blanco
                               ),
                             ),
                           ),
@@ -243,6 +246,10 @@ class AdminPage extends StatelessWidget {
                                   try {
                                     await designService
                                         .finalizeDesign(designOrder.id!);
+
+                                    // Eliminar el pedido de la lista temporalmente
+                                    designService.designs.removeAt(index);
+
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(
                                           content: Text("Pedido finalizado")),
@@ -259,7 +266,9 @@ class AdminPage extends StatelessWidget {
                               icon: const Icon(Icons.check),
                               label: const Text('Finalizar Pedido'),
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.green,
+                                backgroundColor:
+                                    const Color.fromRGBO(0, 41, 123, 1), // Azul
+                                foregroundColor: Colors.white, // Texto blanco
                               ),
                             ),
                           ),
