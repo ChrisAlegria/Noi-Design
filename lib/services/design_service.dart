@@ -6,7 +6,7 @@ import 'package:noi_design/models/design.dart';
 class DesignService extends ChangeNotifier {
   final String _baseURL = "prints-4a69e-default-rtdb.firebaseio.com";
 
-  final List<Design> design =
+  final List<Design> designs =
       []; // Lista para almacenar las solicitudes de diseño
   bool isLoading = true;
   Design? selectedDesignRequest;
@@ -28,13 +28,13 @@ class DesignService extends ChangeNotifier {
       final Map<String, dynamic> designData = jsonDecode(resp.body) ?? {};
 
       // Limpiamos la lista para evitar duplicados al refrescar
-      design.clear();
+      designs.clear();
 
       // Recorremos el mapa de la respuesta y agregamos solicitudes a la lista
       designData.forEach((key, value) {
         final tempDesignRequest = Design.fromMap(value);
         tempDesignRequest.id = key; // Asigna el ID proporcionado por Firebase
-        design.add(tempDesignRequest);
+        designs.add(tempDesignRequest);
       });
     } else {
       throw Exception(
@@ -54,7 +54,7 @@ class DesignService extends ChangeNotifier {
       final Map<String, dynamic> responseData = json.decode(response.body);
       designRequest.id = responseData[
           'name']; // Asigna el ID del nuevo diseño generado por Firebase
-      design.add(designRequest);
+      designs.add(designRequest);
       notifyListeners(); // Notifica a los oyentes que se ha agregado una nueva solicitud de diseño
     } else {
       throw Exception('Error al agregar solicitud de diseño');
@@ -67,10 +67,24 @@ class DesignService extends ChangeNotifier {
     final response = await http.delete(url);
 
     if (response.statusCode == 200) {
-      design.removeWhere((design) => design.id == id);
+      designs.removeWhere((design) => design.id == id);
       notifyListeners(); // Notifica a los oyentes del cambio
     } else {
       throw Exception('Error al eliminar el pedido de diseño');
+    }
+  }
+
+  Future<void> finalizeDesign(String id) async {
+    final url = Uri.https(_baseURL, 'design/$id.json');
+    final response =
+        await http.patch(url, body: json.encode({"isFinalized": true}));
+
+    if (response.statusCode == 200) {
+      final design = designs.firstWhere((design) => design.id == id);
+      design.isFinalized = true;
+      notifyListeners();
+    } else {
+      throw Exception('Error al finalizar solicitud de diseño');
     }
   }
 }

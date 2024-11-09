@@ -73,4 +73,19 @@ class PrintService extends ChangeNotifier {
       throw Exception('Error al eliminar el pedido de impresión');
     }
   }
+
+  // Función para fianlizar una solicitud de impresión
+  Future<void> finalizePrint(String id) async {
+    final url = Uri.https(_baseURL, 'print/$id.json');
+    final response =
+        await http.patch(url, body: json.encode({"isFinalized": true}));
+
+    if (response.statusCode == 200) {
+      final print = prints.firstWhere((print) => print.id == id);
+      print.isFinalized = true;
+      notifyListeners();
+    } else {
+      throw Exception('Error al finalizar solicitud de impresión');
+    }
+  }
 }

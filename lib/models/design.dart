@@ -7,9 +7,9 @@ class Design {
   String unidad;
   String? plano;
   String? imagenes;
-  String?
-      id; // Asegúrate de que este valor sea opcional si no siempre se proporciona
+  String? id;
   String userEmail;
+  bool? isFinalized;
 
   Design({
     required this.titulo,
@@ -20,15 +20,13 @@ class Design {
     this.plano,
     this.imagenes,
     this.id,
+    this.isFinalized = false,
   });
 
-  // Convertir a JSON
   String toJson() => json.encode(toMap());
 
-  // Crear desde JSON
   factory Design.fromJson(String str) => Design.fromMap(json.decode(str));
 
-  // Crear desde un mapa de datos
   factory Design.fromMap(Map<String, dynamic> json) => Design(
         titulo: json["title"],
         selectedContact: json["selectedContact"],
@@ -36,11 +34,11 @@ class Design {
         unidad: json["selectedUnity"],
         plano: json["planoFilePath"],
         imagenes: json["imageFilePath"],
-        id: json["id"], // Asignamos el id (si existe)
-        userEmail: json["userEmail"], // Asegúrate de incluir el userEmail aquí
+        id: json["id"],
+        userEmail: json["userEmail"],
+        isFinalized: json["isFinalized"] ?? false,
       );
 
-  // Convertir a un mapa de datos
   Map<String, dynamic> toMap() => {
         "title": titulo,
         "selectedContact": selectedContact,
@@ -48,7 +46,8 @@ class Design {
         "selectedUnity": unidad,
         "planoFilePath": plano,
         "imageFilePath": imagenes,
-        "id": id, // Asegúrate de agregar el id al mapa
-        "userEmail": userEmail, // Agrega el userEmail al mapa
+        "id": id,
+        "userEmail": userEmail,
+        "isFinalized": isFinalized,
       };
 }

@@ -161,7 +161,7 @@ class OrdersPage extends StatelessWidget {
                         ),
                   ),
                   const SizedBox(height: 10),
-                  if (designService.design.isEmpty)
+                  if (designService.designs.isEmpty)
                     const Center(
                       child: Padding(
                         padding: EdgeInsets.symmetric(vertical: 20.0),
@@ -175,11 +175,11 @@ class OrdersPage extends StatelessWidget {
                     ListView.builder(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
-                      itemCount: designService.design
+                      itemCount: designService.designs
                           .where((d) => d.userEmail == userEmail)
                           .length,
                       itemBuilder: (context, index) {
-                        final Design designOrder = designService.design
+                        final Design designOrder = designService.designs
                             .where((d) => d.userEmail == userEmail)
                             .toList()[index];
                         return Card(
