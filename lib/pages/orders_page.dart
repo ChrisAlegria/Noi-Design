@@ -124,8 +124,7 @@ class OrdersPage extends StatelessWidget {
                                 Text("Material: ${printOrder.material}"),
                                 Text(
                                     "Escala de Impresión: ${printOrder.escala}"),
-                                Text(
-                                    "Contacto Preferido: ${printOrder.selectedContact}"),
+                                Text("Contacto: ${printOrder.selectedContact}"),
                               ],
                             ),
                             trailing: IconButton(

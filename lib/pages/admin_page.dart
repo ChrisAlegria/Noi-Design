@@ -4,7 +4,6 @@ import 'package:noi_design/models/print.dart';
 import 'package:noi_design/models/design.dart';
 import 'package:noi_design/services/print_service.dart';
 import 'package:noi_design/services/design_service.dart';
-import 'package:noi_design/widgets/global_user.dart';
 import 'package:noi_design/widgets/auth_service.dart';
 
 class AdminPage extends StatelessWidget {
@@ -12,11 +11,21 @@ class AdminPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final globalUser = Provider.of<GlobalUser>(context);
-    final String userEmail = globalUser.email;
-
     final printService = Provider.of<PrintService>(context);
     final designService = Provider.of<DesignService>(context);
+
+// Filtrar pedidos de impresión no finalizados
+    List<Print> pendingPrints = printService.prints
+        .where((printOrder) =>
+            printOrder.isFinalized !=
+            true) // Compara si no es 'true' (también maneja null)
+        .toList();
+
+// Filtrar pedidos de diseño no finalizados
+    List<Design> pendingDesigns = designService.designs
+        .where(
+            (designOrder) => designOrder.isFinalized != true) // Lo mismo aquí
+        .toList();
 
     return Scaffold(
       appBar: AppBar(
@@ -25,9 +34,6 @@ class AdminPage extends StatelessWidget {
         leading: Padding(
           padding: const EdgeInsets.all(8.0),
           child: GestureDetector(
-            onTap: () {
-              Navigator.pushNamed(context, 'home');
-            },
             child: const CircleAvatar(
               backgroundImage: AssetImage('assets/images/Logo.jpg'),
             ),
@@ -45,7 +51,7 @@ class AdminPage extends StatelessWidget {
               }
             },
             itemBuilder: (BuildContext context) {
-              return const {'Mis pedidos', 'Logout'}.map((String choice) {
+              return const {'Logout'}.map((String choice) {
                 return PopupMenuItem<String>(
                   value: choice,
                   child: Text(choice),
@@ -83,7 +89,7 @@ class AdminPage extends StatelessWidget {
                         ),
                   ),
                   const SizedBox(height: 10),
-                  if (printService.prints.isEmpty)
+                  if (pendingPrints.isEmpty)
                     const Center(
                       child: Padding(
                         padding: EdgeInsets.symmetric(vertical: 20.0),
@@ -97,9 +103,9 @@ class AdminPage extends StatelessWidget {
                     ListView.builder(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
-                      itemCount: printService.prints.length,
+                      itemCount: pendingPrints.length,
                       itemBuilder: (context, index) {
-                        final Print printOrder = printService.prints[index];
+                        final Print printOrder = pendingPrints[index];
                         return Card(
                           margin: const EdgeInsets.symmetric(vertical: 8),
                           child: ListTile(
@@ -183,7 +189,7 @@ class AdminPage extends StatelessWidget {
                         ),
                   ),
                   const SizedBox(height: 10),
-                  if (designService.designs.isEmpty)
+                  if (pendingDesigns.isEmpty)
                     const Center(
                       child: Padding(
                         padding: EdgeInsets.symmetric(vertical: 20.0),
@@ -197,9 +203,9 @@ class AdminPage extends StatelessWidget {
                     ListView.builder(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
-                      itemCount: designService.designs.length,
+                      itemCount: pendingDesigns.length,
                       itemBuilder: (context, index) {
-                        final Design designOrder = designService.designs[index];
+                        final Design designOrder = pendingDesigns[index];
                         return Card(
                           margin: const EdgeInsets.symmetric(vertical: 8),
                           child: ListTile(
