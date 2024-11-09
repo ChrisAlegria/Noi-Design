@@ -156,26 +156,28 @@ class _LoginForm extends StatelessWidget {
                   ? null
                   : () async {
                       FocusScope.of(context).unfocus();
-
-                      // Validar el formulario antes de proceder
                       if (!loginForm.isValidForm()) return;
 
-                      // Iniciar la animación de carga
-                      loginForm.isLoading = true;
+                      // Llama a loginUser para verificar las credenciales
+                      final errorMessage = await loginForm.loginUser(context);
 
-                      // Espera de 2 segundos para simular autenticación (ajusta según sea necesario)
-                      await Future.delayed(Duration(seconds: 2));
-
-                      loginForm.isLoading = false;
-
-                      // Verifica si el usuario es admin o no
-                      if (loginForm.email == 'admin@gmail.com' &&
-                          loginForm.password == 'qwerty') {
-                        // Si es admin, redirige a la página de admin
-                        Navigator.pushReplacementNamed(context, 'adminPage');
+                      // Si hay un error, muestra el mensaje
+                      if (errorMessage != null) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(errorMessage),
+                            backgroundColor: Colors.red,
+                          ),
+                        );
                       } else {
-                        // Si no es admin, redirige a la página home
-                        Navigator.pushReplacementNamed(context, 'home');
+                        // Verificar si el correo es admin
+                        if (loginForm.email == 'admin@gmail.com') {
+                          // Si el correo es admin, navega a la página de administración
+                          Navigator.pushReplacementNamed(context, 'adminPage');
+                        } else {
+                          // Si el correo es cualquier otro, navega al home
+                          Navigator.pushReplacementNamed(context, 'home');
+                        }
                       }
                     },
             ),
