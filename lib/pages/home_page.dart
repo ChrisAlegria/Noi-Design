@@ -33,12 +33,17 @@ class HomePage extends StatelessWidget {
                     builder: (context) => OrdersPage(),
                   ),
                 );
+              } else if (value == 'Historial de pedidos') {
+                // Navegar a la pantalla de historial de pedidos
+                Navigator.pushNamed(context,
+                    'historial'); // Asegúrate de tener esta ruta configurada
               } else if (value == 'Logout') {
                 logout(context);
               }
             },
             itemBuilder: (BuildContext context) {
-              return {'Mis pedidos', 'Logout'}.map((String choice) {
+              return const {'Mis pedidos', 'Historial de pedidos', 'Logout'}
+                  .map((String choice) {
                 return PopupMenuItem<String>(
                   value: choice,
                   child: Text(choice),

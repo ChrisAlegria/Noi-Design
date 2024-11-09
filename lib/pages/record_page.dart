@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:noi_design/pages/orders_page.dart';
 import 'package:provider/provider.dart';
 import 'package:noi_design/models/print.dart';
 import 'package:noi_design/models/design.dart';
@@ -7,8 +8,8 @@ import 'package:noi_design/services/design_service.dart';
 import 'package:noi_design/widgets/global_user.dart';
 import 'package:noi_design/widgets/auth_service.dart';
 
-class OrdersPage extends StatelessWidget {
-  const OrdersPage({super.key});
+class RecordPage extends StatelessWidget {
+  const RecordPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -37,10 +38,13 @@ class OrdersPage extends StatelessWidget {
               color: Color.fromRGBO(0, 41, 123, 1),
             ),
             onSelected: (String value) {
-              if (value == 'Historial de pedidos') {
-                // Navegar a la pantalla de historial de pedidos
-                Navigator.pushNamed(context,
-                    'historial'); // Asegúrate de tener esta ruta configurada
+              if (value == 'Mis pedidos') {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => OrdersPage(),
+                  ),
+                );
               } else if (value == 'Logout') {
                 logout(context);
               }
@@ -76,11 +80,10 @@ class OrdersPage extends StatelessWidget {
             padding: const EdgeInsets.all(16.0),
             child: SingleChildScrollView(
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment
-                    .center, // Esto centrará los textos dentro de la columna
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
-                    'Pedidos de Impresión',
+                    'Historial de Impresiones',
                     style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
@@ -92,7 +95,7 @@ class OrdersPage extends StatelessWidget {
                       child: Padding(
                         padding: EdgeInsets.symmetric(vertical: 20.0),
                         child: Text(
-                          "No hay pedidos de impresión pendientes",
+                          "No hay pedidos de impresión finalizados",
                           style: TextStyle(color: Colors.white),
                         ),
                       ),
@@ -103,14 +106,13 @@ class OrdersPage extends StatelessWidget {
                       physics: const NeverScrollableScrollPhysics(),
                       itemCount: printService.prints
                           .where((p) =>
-                              p.userEmail == userEmail &&
-                              p.isFinalized == false)
+                              p.userEmail == userEmail && p.isFinalized == true)
                           .length,
                       itemBuilder: (context, index) {
                         final Print printOrder = printService.prints
                             .where((p) =>
                                 p.userEmail == userEmail &&
-                                p.isFinalized == false)
+                                p.isFinalized == true)
                             .toList()[index];
 
                         return Card(
@@ -130,33 +132,13 @@ class OrdersPage extends StatelessWidget {
                                 Text("Contacto: ${printOrder.selectedContact}"),
                               ],
                             ),
-                            trailing: IconButton(
-                              icon: const Icon(Icons.delete, color: Colors.red),
-                              onPressed: () async {
-                                try {
-                                  await printService
-                                      .deletePrint(printOrder.id!);
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                        content: Text(
-                                            "Pedido de impresión eliminado")),
-                                  );
-                                } catch (e) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                        content: Text(
-                                            "Error al eliminar el pedido")),
-                                  );
-                                }
-                              },
-                            ),
                           ),
                         );
                       },
                     ),
                   const SizedBox(height: 20),
                   Text(
-                    'Pedidos de Diseño',
+                    'Historial de Diseños',
                     style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
@@ -168,7 +150,7 @@ class OrdersPage extends StatelessWidget {
                       child: Padding(
                         padding: EdgeInsets.symmetric(vertical: 20.0),
                         child: Text(
-                          "No hay pedidos de diseño pendientes",
+                          "No hay pedidos de diseño finalizados",
                           style: TextStyle(color: Colors.white),
                         ),
                       ),
@@ -179,14 +161,13 @@ class OrdersPage extends StatelessWidget {
                       physics: const NeverScrollableScrollPhysics(),
                       itemCount: designService.designs
                           .where((d) =>
-                              d.userEmail == userEmail &&
-                              (d.isFinalized == false))
+                              d.userEmail == userEmail && d.isFinalized == true)
                           .length,
                       itemBuilder: (context, index) {
                         final Design designOrder = designService.designs
                             .where((d) =>
                                 d.userEmail == userEmail &&
-                                (d.isFinalized == false))
+                                d.isFinalized == true)
                             .toList()[index];
 
                         return Card(
@@ -204,26 +185,6 @@ class OrdersPage extends StatelessWidget {
                                 Text(
                                     "Contacto Favorito: ${designOrder.selectedContact}"),
                               ],
-                            ),
-                            trailing: IconButton(
-                              icon: const Icon(Icons.delete, color: Colors.red),
-                              onPressed: () async {
-                                try {
-                                  await designService
-                                      .deleteDesign(designOrder.id!);
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                        content:
-                                            Text("Pedido de diseño eliminado")),
-                                  );
-                                } catch (e) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                        content: Text(
-                                            "Error al eliminar el pedido")),
-                                  );
-                                }
-                              },
                             ),
                           ),
                         );

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:noi_design/pages/admin_page.dart';
 import 'package:noi_design/pages/home_page.dart';
 import 'package:noi_design/pages/login_page.dart';
+import 'package:noi_design/pages/record_page.dart';
 import 'package:noi_design/pages/register_page.dart';
 import 'package:noi_design/services/design_service.dart';
 import 'package:noi_design/services/user_service.dart';
@@ -49,6 +50,7 @@ class MyApp extends StatelessWidget {
         'home': (context) => HomePage(),
         'register': (context) => RegisterPage(),
         'adminPage': (context) => AdminPage(),
+        'historial': (context) => RecordPage(),
       },
       theme: ThemeData.light().copyWith(
         scaffoldBackgroundColor: Colors.grey[300],

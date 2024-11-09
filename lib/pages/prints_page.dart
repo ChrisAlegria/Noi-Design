@@ -33,35 +33,40 @@ class _PrintPageState extends State<PrintPage> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+        backgroundColor: Color.fromARGB(255, 255, 255, 255),
         elevation: 0, // Si deseas que el AppBar no tenga sombra
         leading: Padding(
           padding:
               const EdgeInsets.all(8.0), // Padding opcional alrededor del logo
-          child: GestureDetector(
-            onTap: () {
-              // Navegar a la pantalla de inicio
-              Navigator.pushNamed(context,
-                  'home'); // Ajusta '/home' según la ruta de tu pantalla de inicio
-            },
-            child: const CircleAvatar(
-              backgroundImage: AssetImage('assets/images/Logo.jpg'),
-            ),
+          child: CircleAvatar(
+            backgroundImage: AssetImage('assets/images/Logo.jpg'),
           ),
         ),
         actions: [
           PopupMenuButton<String>(
-            icon: const Icon(
+            icon: Icon(
               Icons.person,
               color: Color.fromRGBO(0, 41, 123, 1),
             ),
             onSelected: (String value) {
-              if (value == 'Logout') {
+              if (value == 'Mis pedidos') {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => OrdersPage(),
+                  ),
+                );
+              } else if (value == 'Historial de pedidos') {
+                // Navegar a la pantalla de historial de pedidos
+                Navigator.pushNamed(context,
+                    'historial_pedidos'); // Asegúrate de tener esta ruta configurada
+              } else if (value == 'Logout') {
                 logout(context);
               }
             },
             itemBuilder: (BuildContext context) {
-              return const {'Mis pedidos', 'Logout'}.map((String choice) {
+              return const {'Mis pedidos', 'Historial de pedidos', 'Logout'}
+                  .map((String choice) {
                 return PopupMenuItem<String>(
                   value: choice,
                   child: Text(choice),
