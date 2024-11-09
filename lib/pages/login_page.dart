@@ -156,21 +156,25 @@ class _LoginForm extends StatelessWidget {
                   ? null
                   : () async {
                       FocusScope.of(context).unfocus();
+
+                      // Validar el formulario antes de proceder
                       if (!loginForm.isValidForm()) return;
 
-                      // Llama a loginUser para verificar las credenciales
-                      final errorMessage = await loginForm.loginUser(context);
+                      // Iniciar la animación de carga
+                      loginForm.isLoading = true;
 
-                      // Si hay un error, muestra el mensaje
-                      if (errorMessage != null) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(errorMessage),
-                            backgroundColor: Colors.red,
-                          ),
-                        );
+                      // Espera de 2 segundos para simular autenticación (ajusta según sea necesario)
+                      await Future.delayed(Duration(seconds: 2));
+
+                      loginForm.isLoading = false;
+
+                      // Verifica si el usuario es admin o no
+                      if (loginForm.email == 'admin@gmail.com' &&
+                          loginForm.password == 'qwerty') {
+                        // Si es admin, redirige a la página de admin
+                        Navigator.pushReplacementNamed(context, 'adminPage');
                       } else {
-                        // Si el login es exitoso, navega a la pantalla principal
+                        // Si no es admin, redirige a la página home
                         Navigator.pushReplacementNamed(context, 'home');
                       }
                     },
