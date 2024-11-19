@@ -84,8 +84,9 @@ class _AdminPageState extends State<AdminPage> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
-                    'Pedidos de Impresión - Admin',
+                    'Pedidos de Impresión Pendientes',
                     style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                          fontSize: 23,
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
                         ),
@@ -186,8 +187,9 @@ class _AdminPageState extends State<AdminPage> {
                     ),
                   const SizedBox(height: 20),
                   Text(
-                    'Pedidos de Diseño - Admin',
+                    'Pedidos de Diseño Pendientes',
                     style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                          fontSize: 23,
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
                         ),

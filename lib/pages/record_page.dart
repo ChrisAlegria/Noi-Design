@@ -148,6 +148,26 @@ class RecordPage extends StatelessWidget {
                                 Text("Contacto: ${printOrder.selectedContact}"),
                               ],
                             ),
+                            trailing: IconButton(
+                              icon: const Icon(Icons.delete, color: Colors.red),
+                              onPressed: () async {
+                                try {
+                                  await printService
+                                      .deletePrint(printOrder.id!);
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                        content: Text(
+                                            "Pedido de impresión eliminado")),
+                                  );
+                                } catch (e) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                        content: Text(
+                                            "Error al eliminar el pedido")),
+                                  );
+                                }
+                              },
+                            ),
                           ),
                         );
                       },
@@ -201,6 +221,26 @@ class RecordPage extends StatelessWidget {
                                 Text(
                                     "Contacto Favorito: ${designOrder.selectedContact}"),
                               ],
+                            ),
+                            trailing: IconButton(
+                              icon: const Icon(Icons.delete, color: Colors.red),
+                              onPressed: () async {
+                                try {
+                                  await designService
+                                      .deleteDesign(designOrder.id!);
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                        content:
+                                            Text("Pedido de diseño eliminado")),
+                                  );
+                                } catch (e) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                        content: Text(
+                                            "Error al eliminar el pedido")),
+                                  );
+                                }
+                              },
                             ),
                           ),
                         );
