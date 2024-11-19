@@ -35,6 +35,7 @@ class _DesignPageState extends State<DesignPage> {
           child: Text(
             "Realizar Pedido De Diseño",
             style: TextStyle(
+              fontSize: 16,
               color: Color.fromRGBO(0, 41, 123, 1),
               fontWeight: FontWeight.bold,
             ),

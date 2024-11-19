@@ -16,6 +16,7 @@ class HomePage extends StatelessWidget {
           child: Text(
             "Inicio",
             style: TextStyle(
+              fontSize: 16,
               color: Color.fromRGBO(0, 41, 123, 1),
               fontWeight: FontWeight.bold,
             ),

@@ -28,6 +28,7 @@ class RecordPage extends StatelessWidget {
           child: Text(
             "Historial De Pedidos",
             style: TextStyle(
+              fontSize: 16,
               color: Color.fromRGBO(0, 41, 123, 1),
               fontWeight: FontWeight.bold,
             ),
