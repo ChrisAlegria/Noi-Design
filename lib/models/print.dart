@@ -6,7 +6,6 @@ class Print {
   String description;
   String escala;
   String material;
-  String? modelo;
   String? id;
   String userEmail;
   bool? isFinalized;
@@ -18,7 +17,6 @@ class Print {
     required this.userEmail,
     required this.material,
     required this.escala,
-    this.modelo,
     this.id,
     this.isFinalized = false,
   });
@@ -31,7 +29,6 @@ class Print {
         titulo: json["title"],
         selectedContact: json["selectedContact"],
         description: json["description"],
-        modelo: json["selectedModel"],
         material: json["selectedMaterial"],
         escala: json["selectedScale"],
         id: json["id"],
@@ -43,7 +40,6 @@ class Print {
         "title": titulo,
         "selectedContact": selectedContact,
         "description": description,
-        "selectedModel": modelo,
         "selectedMaterial": material,
         "selectedScale": escala,
         "id": id,

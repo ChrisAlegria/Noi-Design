@@ -5,7 +5,6 @@ import 'package:noi_design/services/print_service.dart';
 import 'package:noi_design/pages/home_page.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:noi_design/widgets/global_user.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:noi_design/models/print.dart';
 import 'package:noi_design/widgets/auth_service.dart';
 
@@ -23,7 +22,6 @@ class _PrintPageState extends State<PrintPage> {
   String? description = ''; // Descripción de la impresión
   String? escala = ''; // Escala de impresión
   String? material = ''; // Material de impresión
-  String? modelo; // Modelo de impresión
   String? id; // ID del objeto Print (opcional)
   String? userEmail; // Email del usuario que inició sesión
 
@@ -38,8 +36,14 @@ class _PrintPageState extends State<PrintPage> {
         leading: Padding(
           padding:
               const EdgeInsets.all(8.0), // Padding opcional alrededor del logo
-          child: CircleAvatar(
-            backgroundImage: AssetImage('assets/images/Logo.jpg'),
+          child: GestureDetector(
+            onTap: () {
+              Navigator.pushNamed(
+                  context, 'home'); // Cambiar a la ruta de 'home'
+            },
+            child: CircleAvatar(
+              backgroundImage: AssetImage('assets/images/Logo.jpg'),
+            ),
           ),
         ),
         actions: [
@@ -58,8 +62,8 @@ class _PrintPageState extends State<PrintPage> {
                 );
               } else if (value == 'Historial de pedidos') {
                 // Navegar a la pantalla de historial de pedidos
-                Navigator.pushNamed(context,
-                    'historial_pedidos'); // Asegúrate de tener esta ruta configurada
+                Navigator.pushNamed(
+                    context, 'historial_pedidos'); // Ruta configurada
               } else if (value == 'Logout') {
                 logout(context);
               }
@@ -149,8 +153,6 @@ class _PrintPageState extends State<PrintPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              _buildFileUploadField(),
-              const SizedBox(height: 20),
               _buildReference(),
               const SizedBox(height: 20),
               _buildMaterialDropdown(),
@@ -168,44 +170,6 @@ class _PrintPageState extends State<PrintPage> {
           ),
         ),
       ),
-    );
-  }
-
-  // Método para el campo de carga de archivos
-  Widget _buildFileUploadField() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Sube tu archivo (.stl, .sldprt)',
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-            color: Color.fromRGBO(0, 56, 165, 1),
-          ),
-        ),
-        const SizedBox(height: 10),
-        ElevatedButton.icon(
-          onPressed: () async {
-            // Lógica de carga de archivos para plano
-            FilePickerResult? result = await FilePicker.platform.pickFiles(
-              type: FileType.custom,
-              allowedExtensions: ['stl', 'sldprt'],
-            );
-
-            if (result != null) {
-              modelo = result.files.single.path;
-              //Lógica para subir el archivo a la base de datos
-              print('Archivo de modelo seleccionado: $modelo');
-            } else {
-              // El usuario canceló la selección
-              print('Selección de archivo cancelada');
-            }
-          },
-          icon: const Icon(Icons.upload_file), // Ícono de carga
-          label: const Text('Seleccionar archivo'),
-        ),
-      ],
     );
   }
 
@@ -422,7 +386,6 @@ class _PrintPageState extends State<PrintPage> {
                 description: description ?? '',
                 escala: escala ?? '',
                 material: material ?? '',
-                modelo: modelo,
                 userEmail: userEmail, // Agrega el correo aquí
               );
 
@@ -460,7 +423,6 @@ class _PrintPageState extends State<PrintPage> {
                   description = '';
                   escala = null;
                   material = null;
-                  modelo = null;
                   _isLoading = false;
                 });
               } catch (error) {

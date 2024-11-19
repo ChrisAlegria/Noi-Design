@@ -6,25 +6,27 @@ import 'package:noi_design/services/print_service.dart';
 import 'package:noi_design/services/design_service.dart';
 import 'package:noi_design/widgets/auth_service.dart';
 
-class AdminPage extends StatelessWidget {
+class AdminPage extends StatefulWidget {
   const AdminPage({super.key});
 
+  @override
+  _AdminPageState createState() => _AdminPageState();
+}
+
+class _AdminPageState extends State<AdminPage> {
   @override
   Widget build(BuildContext context) {
     final printService = Provider.of<PrintService>(context);
     final designService = Provider.of<DesignService>(context);
 
-// Filtrar pedidos de impresión no finalizados
+    // Filtrar pedidos de impresión no finalizados
     List<Print> pendingPrints = printService.prints
-        .where((printOrder) =>
-            printOrder.isFinalized !=
-            true) // Compara si no es 'true' (también maneja null)
+        .where((printOrder) => printOrder.isFinalized != true)
         .toList();
 
-// Filtrar pedidos de diseño no finalizados
+    // Filtrar pedidos de diseño no finalizados
     List<Design> pendingDesigns = designService.designs
-        .where(
-            (designOrder) => designOrder.isFinalized != true) // Lo mismo aquí
+        .where((designOrder) => designOrder.isFinalized != true)
         .toList();
 
     return Scaffold(
@@ -153,8 +155,9 @@ class AdminPage extends StatelessWidget {
                                     await printService
                                         .finalizePrint(printOrder.id!);
 
-                                    // Eliminar el pedido de la lista temporalmente
-                                    printService.prints.removeAt(index);
+                                    setState(() {
+                                      pendingPrints.removeAt(index);
+                                    });
 
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(
@@ -169,6 +172,7 @@ class AdminPage extends StatelessWidget {
                                   }
                                 }
                               },
+                              icon: const Icon(Icons.check),
                               label: const Text('Finalizar Pedido'),
                               style: ElevatedButton.styleFrom(
                                 backgroundColor:
@@ -253,8 +257,9 @@ class AdminPage extends StatelessWidget {
                                     await designService
                                         .finalizeDesign(designOrder.id!);
 
-                                    // Eliminar el pedido de la lista temporalmente
-                                    designService.designs.removeAt(index);
+                                    setState(() {
+                                      pendingDesigns.removeAt(index);
+                                    });
 
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(

@@ -6,7 +6,6 @@ import 'package:noi_design/services/design_service.dart';
 import 'package:noi_design/pages/home_page.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:noi_design/widgets/global_user.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:noi_design/models/design.dart';
 
 class DesignPage extends StatefulWidget {
@@ -22,8 +21,6 @@ class _DesignPageState extends State<DesignPage> {
   String? selectedContact = '';
   String? description = '';
   String? unidad = '';
-  String? plano;
-  String? imagenes;
   String? userEmail;
 
   @override
@@ -37,8 +34,14 @@ class _DesignPageState extends State<DesignPage> {
         leading: Padding(
           padding:
               const EdgeInsets.all(8.0), // Padding opcional alrededor del logo
-          child: CircleAvatar(
-            backgroundImage: AssetImage('assets/images/Logo.jpg'),
+          child: GestureDetector(
+            onTap: () {
+              Navigator.pushNamed(
+                  context, 'home'); // Cambiar a la ruta de 'home'
+            },
+            child: CircleAvatar(
+              backgroundImage: AssetImage('assets/images/Logo.jpg'),
+            ),
           ),
         ),
         actions: [
@@ -57,8 +60,8 @@ class _DesignPageState extends State<DesignPage> {
                 );
               } else if (value == 'Historial de pedidos') {
                 // Navegar a la pantalla de historial de pedidos
-                Navigator.pushNamed(context,
-                    'historial_pedidos'); // Asegúrate de tener esta ruta configurada
+                Navigator.pushNamed(
+                    context, 'historial_pedidos'); // Ruta configurada
               } else if (value == 'Logout') {
                 logout(context);
               }
@@ -147,10 +150,6 @@ class _DesignPageState extends State<DesignPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              _buildPlanoUploadField(),
-              const SizedBox(height: 20),
-              _buildImageUploadField(),
-              const SizedBox(height: 20),
               _buildReference(),
               const SizedBox(height: 20),
               _buildUnityDropdown(),
@@ -166,83 +165,6 @@ class _DesignPageState extends State<DesignPage> {
           ),
         ),
       ),
-    );
-  }
-
-  // Método para el campo de carga de archivos de plano
-  Widget _buildPlanoUploadField() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Sube tu plano (.rar, .zip)',
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-            color: Color.fromRGBO(0, 56, 165, 1),
-          ),
-        ),
-        const SizedBox(height: 10),
-        ElevatedButton.icon(
-          onPressed: () async {
-            // Lógica de carga de archivos para plano
-            FilePickerResult? result = await FilePicker.platform.pickFiles(
-              type: FileType.custom,
-              allowedExtensions: ['zip', 'rar'],
-            );
-
-            if (result != null) {
-              plano = result.files.single.path;
-              // Aquí puedes agregar lógica para subir el archivo a la base de datos
-              print('Archivo de plano seleccionado: $plano');
-            } else {
-              // El usuario canceló la selección
-              print('Selección de archivo cancelada');
-            }
-          },
-          icon: const Icon(Icons.upload_file), // Ícono de carga
-          label: const Text('Seleccionar archivo'),
-        ),
-      ],
-    );
-  }
-
-  // Método para el campo de carga de imágenes de referencia
-  Widget _buildImageUploadField() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Sube imágenes de referencia',
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-            color: Color.fromRGBO(0, 56, 165, 1),
-          ),
-        ),
-        const SizedBox(height: 10),
-        ElevatedButton.icon(
-          onPressed: () async {
-            // Lógica de carga de imágenes
-            FilePickerResult? result = await FilePicker.platform.pickFiles(
-              type: FileType.image,
-              allowMultiple: true, // Permite seleccionar múltiples imágenes
-            );
-
-            if (result != null) {
-              imagenes =
-                  result.files.map((file) => file.path).toList().toString();
-              // Aquí puedes agregar lógica para subir las imágenes a la base de datos
-              print('Imágenes seleccionadas: $imagenes');
-            } else {
-              // El usuario canceló la selección
-              print('Selección de imagen cancelada');
-            }
-          },
-          icon: const Icon(Icons.image), // Ícono de imagen
-          label: const Text('Seleccionar imágenes'),
-        ),
-      ],
     );
   }
 
@@ -400,8 +322,6 @@ class _DesignPageState extends State<DesignPage> {
                 selectedContact: selectedContact ?? '',
                 description: description ?? '',
                 unidad: unidad ?? '',
-                plano: plano,
-                imagenes: imagenes,
                 userEmail: userEmail, // Agrega el correo aquí
               );
 
@@ -438,8 +358,6 @@ class _DesignPageState extends State<DesignPage> {
                   selectedContact = '';
                   description = '';
                   unidad = null;
-                  plano = null;
-                  imagenes = null;
                   _isLoading = false;
                 });
               } catch (error) {

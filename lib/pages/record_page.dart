@@ -27,8 +27,14 @@ class RecordPage extends StatelessWidget {
         leading: Padding(
           padding:
               const EdgeInsets.all(8.0), // Padding opcional alrededor del logo
-          child: CircleAvatar(
-            backgroundImage: AssetImage('assets/images/Logo.jpg'),
+          child: GestureDetector(
+            onTap: () {
+              Navigator.pushNamed(
+                  context, 'home'); // Cambiar a la ruta de 'home'
+            },
+            child: CircleAvatar(
+              backgroundImage: AssetImage('assets/images/Logo.jpg'),
+            ),
           ),
         ),
         actions: [
@@ -45,6 +51,9 @@ class RecordPage extends StatelessWidget {
                     builder: (context) => OrdersPage(),
                   ),
                 );
+              } else if (value == 'Historial de pedidos') {
+                // Navegar a la pantalla de historial de pedidos
+                Navigator.pushNamed(context, 'historial'); // Ruta configurada
               } else if (value == 'Logout') {
                 logout(context);
               }

@@ -26,8 +26,14 @@ class OrdersPage extends StatelessWidget {
         leading: Padding(
           padding:
               const EdgeInsets.all(8.0), // Padding opcional alrededor del logo
-          child: CircleAvatar(
-            backgroundImage: AssetImage('assets/images/Logo.jpg'),
+          child: GestureDetector(
+            onTap: () {
+              Navigator.pushNamed(
+                  context, 'home'); // Cambiar a la ruta de 'home'
+            },
+            child: CircleAvatar(
+              backgroundImage: AssetImage('assets/images/Logo.jpg'),
+            ),
           ),
         ),
         actions: [
@@ -37,10 +43,16 @@ class OrdersPage extends StatelessWidget {
               color: Color.fromRGBO(0, 41, 123, 1),
             ),
             onSelected: (String value) {
-              if (value == 'Historial de pedidos') {
+              if (value == 'Mis pedidos') {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => OrdersPage(),
+                  ),
+                );
+              } else if (value == 'Historial de pedidos') {
                 // Navegar a la pantalla de historial de pedidos
-                Navigator.pushNamed(context,
-                    'historial'); // Asegúrate de tener esta ruta configurada
+                Navigator.pushNamed(context, 'historial'); // Ruta configurada
               } else if (value == 'Logout') {
                 logout(context);
               }
