@@ -11,7 +11,16 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color.fromARGB(255, 255, 255, 255),
-        elevation: 0, // Si deseas que el AppBar no tenga sombra
+        elevation: 0,
+        title: Center(
+          child: Text(
+            "Inicio",
+            style: TextStyle(
+              color: Color.fromRGBO(0, 41, 123, 1),
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
         leading: Padding(
           padding:
               const EdgeInsets.all(8.0), // Padding opcional alrededor del logo

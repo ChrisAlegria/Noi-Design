@@ -23,6 +23,15 @@ class OrdersPage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Color.fromARGB(255, 255, 255, 255),
         elevation: 0, // Si deseas que el AppBar no tenga sombra
+        title: Center(
+          child: Text(
+            "Mis Pedidos",
+            style: TextStyle(
+              color: Color.fromRGBO(0, 41, 123, 1),
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
         leading: Padding(
           padding:
               const EdgeInsets.all(8.0), // Padding opcional alrededor del logo
