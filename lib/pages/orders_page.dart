@@ -43,14 +43,7 @@ class OrdersPage extends StatelessWidget {
               color: Color.fromRGBO(0, 41, 123, 1),
             ),
             onSelected: (String value) {
-              if (value == 'Mis pedidos') {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => OrdersPage(),
-                  ),
-                );
-              } else if (value == 'Historial de pedidos') {
+              if (value == 'Historial de pedidos') {
                 // Navegar a la pantalla de historial de pedidos
                 Navigator.pushNamed(context, 'historial'); // Ruta configurada
               } else if (value == 'Logout') {

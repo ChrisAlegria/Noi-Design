@@ -51,9 +51,6 @@ class RecordPage extends StatelessWidget {
                     builder: (context) => OrdersPage(),
                   ),
                 );
-              } else if (value == 'Historial de pedidos') {
-                // Navegar a la pantalla de historial de pedidos
-                Navigator.pushNamed(context, 'historial'); // Ruta configurada
               } else if (value == 'Logout') {
                 logout(context);
               }
