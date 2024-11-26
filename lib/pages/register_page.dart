@@ -39,7 +39,7 @@ class RegisterPage extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
-                    color: Colors.black, // Ajusta el color según prefieras
+                    color: Colors.black,
                   ),
                 ),
               ),
@@ -253,9 +253,8 @@ class __RegisterFormState extends State<_RegisterForm> {
                               TextButton(
                                 child: Text("Regresar a Inicio de Sesión"),
                                 onPressed: () {
-                                  Navigator.of(context).pop(); // Cerrar diálogo
-                                  Navigator.of(context)
-                                      .pop(); // Regresar a la pantalla anterior
+                                  Navigator.of(context).pop();
+                                  Navigator.of(context).pop();
                                 },
                               ),
                             ],

@@ -26,7 +26,7 @@ class Users {
         nombre: json["nombre"],
         email: json["email"],
         phone: json["phone"],
-        password: json["password"], // Mapeamos el campo contraseña
+        password: json["password"], 
         id: json.containsKey("id") ? json["id"] : null,
       );
 

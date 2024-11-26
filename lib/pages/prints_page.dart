@@ -18,12 +18,12 @@ class _PrintPageState extends State<PrintPage> {
   bool _isLoading = false;
 
   String? titulo = '';
-  String? selectedContact = ''; // Medio de contacto (antes "medioContacto")
-  String? description = ''; // Descripción de la impresión
-  String? escala = ''; // Escala de impresión
-  String? material = ''; // Material de impresión
-  String? id; // ID del objeto Print (opcional)
-  String? userEmail; // Email del usuario que inició sesión
+  String? selectedContact = '';
+  String? description = '';
+  String? escala = '';
+  String? material = '';
+  String? id;
+  String? userEmail;
 
   @override
   Widget build(BuildContext context) {
@@ -44,12 +44,10 @@ class _PrintPageState extends State<PrintPage> {
           ),
         ),
         leading: Padding(
-          padding:
-              const EdgeInsets.all(8.0), // Padding opcional alrededor del logo
+          padding: const EdgeInsets.all(8.0),
           child: GestureDetector(
             onTap: () {
-              Navigator.pushNamed(
-                  context, 'home'); // Cambiar a la ruta de 'home'
+              Navigator.pushNamed(context, 'home');
             },
             child: CircleAvatar(
               backgroundImage: AssetImage('assets/images/Logo.jpg'),
@@ -72,8 +70,7 @@ class _PrintPageState extends State<PrintPage> {
                 );
               } else if (value == 'Historial de pedidos') {
                 // Navegar a la pantalla de historial de pedidos
-                Navigator.pushNamed(
-                    context, 'historial_pedidos'); // Ruta configurada
+                Navigator.pushNamed(context, 'historial_pedidos');
               } else if (value == 'Logout') {
                 logout(context);
               }
@@ -92,7 +89,6 @@ class _PrintPageState extends State<PrintPage> {
       ),
       body: Stack(
         children: [
-          // Fondo de degradado
           Container(
             decoration: const BoxDecoration(
               gradient: LinearGradient(
@@ -112,7 +108,6 @@ class _PrintPageState extends State<PrintPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  // Título
                   _buildTitle(),
                   const SizedBox(height: 10),
                   _buildSubtitle(),
@@ -340,7 +335,7 @@ class _PrintPageState extends State<PrintPage> {
       ],
       onChanged: (value) {
         setState(() {
-          selectedContact = value!; // Asegúrate de que el valor no sea nulo
+          selectedContact = value!;
         });
       },
       validator: (value) =>
@@ -396,7 +391,7 @@ class _PrintPageState extends State<PrintPage> {
                 description: description ?? '',
                 escala: escala ?? '',
                 material: material ?? '',
-                userEmail: userEmail, // Agrega el correo aquí
+                userEmail: userEmail,
               );
 
               try {
@@ -414,7 +409,7 @@ class _PrintPageState extends State<PrintPage> {
                         TextButton(
                           child: Text("Aceptar"),
                           onPressed: () {
-                            Navigator.of(context).pop(); // Cerrar diálogo
+                            Navigator.of(context).pop();
                             Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
@@ -450,7 +445,7 @@ class _PrintPageState extends State<PrintPage> {
                         TextButton(
                           child: Text("Aceptar"),
                           onPressed: () {
-                            Navigator.of(context).pop(); // Cerrar diálogo
+                            Navigator.of(context).pop();
                           },
                         ),
                       ],

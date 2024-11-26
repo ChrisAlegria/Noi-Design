@@ -33,12 +33,11 @@ class PrintService extends ChangeNotifier {
       // Recorremos el mapa de la respuesta y agregamos solicitudes a la lista
       printData.forEach((key, value) {
         final tempPrintRequest = Print.fromMap(value);
-        tempPrintRequest.id = key; // Asigna el ID proporcionado por Firebase
+        tempPrintRequest.id = key;
         prints.add(tempPrintRequest);
       });
     } else {
-      throw Exception(
-          'Error al cargar solicitudes de impresión'); // Maneja errores de red
+      throw Exception('Error al cargar solicitudes de impresión');
     }
 
     isLoading = false;
@@ -52,8 +51,7 @@ class PrintService extends ChangeNotifier {
 
     if (response.statusCode == 200) {
       final Map<String, dynamic> responseData = json.decode(response.body);
-      printRequest.id = responseData[
-          'name']; // Asigna el ID del nuevo print generado por Firebase
+      printRequest.id = responseData['name'];
       prints.add(printRequest);
       notifyListeners(); // Notifica a los oyentes que se ha agregado una nueva solicitud de impresión
     } else {

@@ -32,11 +32,11 @@ class UserService extends ChangeNotifier {
       // Recorremos el mapa de la respuesta y agregamos usuarios a la lista
       userData.forEach((key, value) {
         final tempUser = Users.fromMap(value);
-        tempUser.id = key; // Asigna el ID proporcionado por Firebase
+        tempUser.id = key;
         users.add(tempUser);
       });
     } else {
-      throw Exception('Error al cargar usuarios'); // Maneja errores de red
+      throw Exception('Error al cargar usuarios');
     }
 
     isLoading = false;
@@ -50,8 +50,7 @@ class UserService extends ChangeNotifier {
 
     if (response.statusCode == 200) {
       final Map<String, dynamic> responseData = json.decode(response.body);
-      user.id = responseData[
-          'name']; // Asigna el ID del nuevo usuario generado por Firebase
+      user.id = responseData['name'];
       users.add(user);
       notifyListeners(); // Notifica a los oyentes que se ha agregado un nuevo usuario
     } else {
@@ -61,7 +60,7 @@ class UserService extends ChangeNotifier {
 
   // Función para actualizar un usuario existente
   Future<void> updateUser(Users user) async {
-    if (user.id == null) return; // Evita actualizar usuarios sin ID
+    if (user.id == null) return;
 
     final url = Uri.https(_baseURL, 'users/${user.id}.json');
     final response = await http.put(url, body: user.toJson());

@@ -42,12 +42,10 @@ class _DesignPageState extends State<DesignPage> {
           ),
         ),
         leading: Padding(
-          padding:
-              const EdgeInsets.all(8.0), // Padding opcional alrededor del logo
+          padding: const EdgeInsets.all(8.0),
           child: GestureDetector(
             onTap: () {
-              Navigator.pushNamed(
-                  context, 'home'); // Cambiar a la ruta de 'home'
+              Navigator.pushNamed(context, 'home');
             },
             child: CircleAvatar(
               backgroundImage: AssetImage('assets/images/Logo.jpg'),
@@ -70,8 +68,7 @@ class _DesignPageState extends State<DesignPage> {
                 );
               } else if (value == 'Historial de pedidos') {
                 // Navegar a la pantalla de historial de pedidos
-                Navigator.pushNamed(
-                    context, 'historial_pedidos'); // Ruta configurada
+                Navigator.pushNamed(context, 'historial_pedidos');
               } else if (value == 'Logout') {
                 logout(context);
               }
@@ -90,7 +87,6 @@ class _DesignPageState extends State<DesignPage> {
       ),
       body: Stack(
         children: [
-          // Fondo de degradado
           Container(
             decoration: const BoxDecoration(
               gradient: LinearGradient(
@@ -110,7 +106,6 @@ class _DesignPageState extends State<DesignPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  // Título
                   _buildTitle(),
                   const SizedBox(height: 10),
                   _buildSubtitle(),
@@ -224,7 +219,7 @@ class _DesignPageState extends State<DesignPage> {
       ],
       onChanged: (value) {
         setState(() {
-          unidad = value; // Actualizar la variable seleccionada
+          unidad = value; // Actualiza la variable seleccionada
         });
       },
       validator: (value) =>
@@ -277,7 +272,7 @@ class _DesignPageState extends State<DesignPage> {
       ],
       onChanged: (value) {
         setState(() {
-          selectedContact = value!; // Asegúrate de que el valor no sea nulo
+          selectedContact = value!;
         });
       },
       validator: (value) =>
@@ -332,7 +327,7 @@ class _DesignPageState extends State<DesignPage> {
                 selectedContact: selectedContact ?? '',
                 description: description ?? '',
                 unidad: unidad ?? '',
-                userEmail: userEmail, // Agrega el correo aquí
+                userEmail: userEmail,
               );
 
               try {
@@ -350,7 +345,7 @@ class _DesignPageState extends State<DesignPage> {
                         TextButton(
                           child: Text("Aceptar"),
                           onPressed: () {
-                            Navigator.of(context).pop(); // Cerrar diálogo
+                            Navigator.of(context).pop();
                             Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
@@ -385,7 +380,7 @@ class _DesignPageState extends State<DesignPage> {
                         TextButton(
                           child: Text("Aceptar"),
                           onPressed: () {
-                            Navigator.of(context).pop(); // Cerrar diálogo
+                            Navigator.of(context).pop();
                           },
                         ),
                       ],

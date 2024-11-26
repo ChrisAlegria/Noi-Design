@@ -44,7 +44,6 @@ class _PurpleBox extends StatelessWidget {
     return Container(
       width: double.infinity,
       height: size.height * 0.4,
-      // color: Colors.indigo,
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [

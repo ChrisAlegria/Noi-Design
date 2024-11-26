@@ -177,8 +177,8 @@ class _AdminPageState extends State<AdminPage> {
                               label: const Text('Finalizar Pedido'),
                               style: ElevatedButton.styleFrom(
                                 backgroundColor:
-                                    const Color.fromRGBO(0, 41, 123, 1), // Azul
-                                foregroundColor: Colors.white, // Texto blanco
+                                    const Color.fromRGBO(0, 41, 123, 1),
+                                foregroundColor: Colors.white,
                               ),
                             ),
                           ),
@@ -280,8 +280,8 @@ class _AdminPageState extends State<AdminPage> {
                               label: const Text('Finalizar Pedido'),
                               style: ElevatedButton.styleFrom(
                                 backgroundColor:
-                                    const Color.fromRGBO(0, 41, 123, 1), // Azul
-                                foregroundColor: Colors.white, // Texto blanco
+                                    const Color.fromRGBO(0, 41, 123, 1),
+                                foregroundColor: Colors.white,
                               ),
                             ),
                           ),

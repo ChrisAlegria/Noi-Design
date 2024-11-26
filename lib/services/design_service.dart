@@ -33,7 +33,7 @@ class DesignService extends ChangeNotifier {
       // Recorremos el mapa de la respuesta y agregamos solicitudes a la lista
       designData.forEach((key, value) {
         final tempDesignRequest = Design.fromMap(value);
-        tempDesignRequest.id = key; // Asigna el ID proporcionado por Firebase
+        tempDesignRequest.id = key;
         designs.add(tempDesignRequest);
       });
     } else {
@@ -52,8 +52,7 @@ class DesignService extends ChangeNotifier {
 
     if (response.statusCode == 200) {
       final Map<String, dynamic> responseData = json.decode(response.body);
-      designRequest.id = responseData[
-          'name']; // Asigna el ID del nuevo diseño generado por Firebase
+      designRequest.id = responseData['name'];
       designs.add(designRequest);
       notifyListeners(); // Notifica a los oyentes que se ha agregado una nueva solicitud de diseño
     } else {

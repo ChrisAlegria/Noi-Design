@@ -23,8 +23,7 @@ class HomePage extends StatelessWidget {
           ),
         ),
         leading: Padding(
-          padding:
-              const EdgeInsets.all(8.0), // Padding opcional alrededor del logo
+          padding: const EdgeInsets.all(8.0),
           child: CircleAvatar(
             backgroundImage: AssetImage('assets/images/Logo.jpg'),
           ),
@@ -45,8 +44,7 @@ class HomePage extends StatelessWidget {
                 );
               } else if (value == 'Historial de pedidos') {
                 // Navegar a la pantalla de historial de pedidos
-                Navigator.pushNamed(context,
-                    'historial'); // Asegúrate de tener esta ruta configurada
+                Navigator.pushNamed(context, 'historial');
               } else if (value == 'Logout') {
                 logout(context);
               }
@@ -65,7 +63,6 @@ class HomePage extends StatelessWidget {
       ),
       body: Stack(
         children: [
-          // Fondo de degradado
           Container(
             decoration: const BoxDecoration(
               gradient: LinearGradient(
@@ -83,7 +80,6 @@ class HomePage extends StatelessWidget {
             child: Column(
               children: [
                 SizedBox(height: 50),
-                // Mensaje de bienvenida
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 20),
                   child: Column(

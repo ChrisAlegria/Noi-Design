@@ -35,12 +35,10 @@ class RecordPage extends StatelessWidget {
           ),
         ),
         leading: Padding(
-          padding:
-              const EdgeInsets.all(8.0), // Padding opcional alrededor del logo
+          padding: const EdgeInsets.all(8.0),
           child: GestureDetector(
             onTap: () {
-              Navigator.pushNamed(
-                  context, 'home'); // Cambiar a la ruta de 'home'
+              Navigator.pushNamed(context, 'home');
             },
             child: CircleAvatar(
               backgroundImage: AssetImage('assets/images/Logo.jpg'),

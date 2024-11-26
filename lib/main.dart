@@ -24,7 +24,6 @@ class AppState extends StatelessWidget {
           create: (_) => PrintService(),
         ),
         ChangeNotifierProvider<UserService>(
-          // Cambiado a ChangeNotifierProvider
           create: (_) => UserService(),
         ),
         ChangeNotifierProvider(

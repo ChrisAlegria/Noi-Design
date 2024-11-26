@@ -14,8 +14,7 @@ void logout(BuildContext context) {
   Navigator.pushReplacement(
     context,
     MaterialPageRoute(
-      builder: (context) =>
-          LoginPage(), // Asegúrate de tener HomePage implementada
+      builder: (context) => LoginPage(),
     ),
   );
 }

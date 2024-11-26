@@ -17,7 +17,7 @@ class LoginFormProvider extends ChangeNotifier {
     isLoading = true;
     notifyListeners();
 
-    // Obtén el servicio de usuarios
+    // Obténer el servicio de usuarios
     final userService = Provider.of<UserService>(context, listen: false);
     final globalUser = Provider.of<GlobalUser>(context,
         listen: false); // Obtén la instancia de GlobalUser

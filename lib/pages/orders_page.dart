@@ -22,7 +22,7 @@ class OrdersPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color.fromARGB(255, 255, 255, 255),
-        elevation: 0, // Si deseas que el AppBar no tenga sombra
+        elevation: 0,
         title: Center(
           child: Text(
             "Mis Pedidos",
@@ -34,12 +34,10 @@ class OrdersPage extends StatelessWidget {
           ),
         ),
         leading: Padding(
-          padding:
-              const EdgeInsets.all(8.0), // Padding opcional alrededor del logo
+          padding: const EdgeInsets.all(8.0),
           child: GestureDetector(
             onTap: () {
-              Navigator.pushNamed(
-                  context, 'home'); // Cambiar a la ruta de 'home'
+              Navigator.pushNamed(context, 'home');
             },
             child: CircleAvatar(
               backgroundImage: AssetImage('assets/images/Logo.jpg'),
@@ -55,7 +53,7 @@ class OrdersPage extends StatelessWidget {
             onSelected: (String value) {
               if (value == 'Historial de pedidos') {
                 // Navegar a la pantalla de historial de pedidos
-                Navigator.pushNamed(context, 'historial'); // Ruta configurada
+                Navigator.pushNamed(context, 'historial');
               } else if (value == 'Logout') {
                 logout(context);
               }
@@ -74,7 +72,6 @@ class OrdersPage extends StatelessWidget {
       ),
       body: Stack(
         children: [
-          // Fondo de degradado
           Container(
             decoration: const BoxDecoration(
               gradient: LinearGradient(
@@ -91,8 +88,7 @@ class OrdersPage extends StatelessWidget {
             padding: const EdgeInsets.all(16.0),
             child: SingleChildScrollView(
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment
-                    .center, // Esto centrará los textos dentro de la columna
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
                     'Pedidos de Impresión',
